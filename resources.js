@@ -254,15 +254,7 @@ const vars = {
 }
 //Database tables
 const dbs = {
-  modmail: new vars.db.table("modmail"),
-  cd: new vars.db.table("cd"),
-  suggestions: new vars.db.table("suggestions"),
-  factions: new vars.db.table("factions"),
-  users: new vars.db.table("users"),
-  snipe: new vars.db.table("snipe"),
-  items: new vars.db.table("items"),
-  settings: new vars.db.table("settings"),
-  authdb: new vars.db.table("authdb"),
+  resp: new vars.db.table("resp"),
   temp: new vars.db.table("temp")
 }
 
@@ -270,22 +262,14 @@ dbs.list = Object.getOwnPropertyNames(dbs)
 vars.list = Object.getOwnPropertyNames(vars)
 func.list = Object.getOwnPropertyNames(func)
 
-const app = vars.express()
-const prefix = config.prefix
-
 exports.data = {
   func: func,
   vars: vars,
-  prefix: prefix,
+  prefix: config.prefix,
   dbs: dbs,
-  app: app,
-  unb: new unbapi.Client(process.env.UNB),
   client: client,
   Discord: Discord,
-  config: vars.config,
-  handybag: require("handybag"),
-  logs: logs,
-  moment: require("moment")
+  config: vars.config
 }
 
 exports.data.list = Object.getOwnPropertyNames(exports.data)
