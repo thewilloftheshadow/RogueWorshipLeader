@@ -1,0 +1,23 @@
+{
+  "name": "rogueworshipleader",
+  "version": "0.1.0",
+  "description": "Custom bot for 'RogueWorshipLeader' server on Discord",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "array-pull": "^0.2.1",
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "moment": "^2.29.1",
+    "node-cmd": "^4.0.0"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "repository": {
+    "url": "https://github.org/thewilloftheshadow/RogueWorshipLeader"
+  },
+  "license": "MIT"
+}
