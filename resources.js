@@ -55,8 +55,8 @@ const func = {
     let permmem = message.guild ? message.guild.members.cache.get(userid) : message.client.users.cache.get(userid)
     
     if(message.guild){
-      if(permmem.roles.cache.has(re.config.roles.staff)) perms.level = 2
-      if(permmem.roles.cache.has(re.config.roles.admin)) perms.level = 3
+      if(permmem.roles.cache.has(config.roles.staff)) perms.level = 2
+      if(permmem.roles.cache.has(config.roles.admin)) perms.level = 3
     }
     if(userid === config.ownerID) perms.eval = true
     if(permmem.user.bot) perms = {
@@ -265,6 +265,7 @@ func.list = Object.getOwnPropertyNames(func)
 exports.data = {
   func: func,
   vars: vars,
+  moment: require("moment"),
   prefix: config.prefix,
   dbs: dbs,
   client: client,

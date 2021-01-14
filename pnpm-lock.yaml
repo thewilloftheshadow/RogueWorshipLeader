@@ -2,6 +2,7 @@ dependencies:
   array-pull: 0.2.1
   discord.js: 12.5.1
   dotenv: 8.2.0
+  luxon: 1.25.0
   moment: 2.29.1
   ms: 2.1.3
   node-cmd: 4.0.0
@@ -273,6 +274,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+  /luxon/1.25.0:
+    dev: false
+    resolution:
+      integrity: sha512-hEgLurSH8kQRjY6i4YLey+mcKVAWXbDNlZRmM6AgWDJ1cY3atl8Ztf5wEY7VBReFbmGnwQPz7KYJblL8B2k0jQ==
   /mime-db/1.45.0:
     dev: false
     engines:
@@ -634,6 +639,7 @@ specifiers:
   array-pull: ^0.2.1
   discord.js: ^12.5.1
   dotenv: ^8.2.0
+  luxon: ^1.25.0
   moment: ^2.29.1
   ms: ^2.1.3
   node-cmd: ^4.0.0
