@@ -215,9 +215,9 @@ const vars = {
   fs: require("fs"),
   botperms: {
     0: "Unknown User / Bot",
-    1: "Squad Member",
-    2: "Squadron Leader",
-    3: "Commander"
+    1: "Server Member",
+    2: "Server Admin",
+    3: "Bot Owner"
   },
   permlist: {
     "0x00000001": "CREATE_INSTANT_INVITE",
