@@ -1,73 +1,38 @@
-const re = require(`../../resources.js`).data
-
 module.exports.run = async (client, message, args) => {
+  const re = message.re
+
   let command = args[0];
+  let showall = false
+  if(command === "all") {
+    command = null
+    showall = true
+  }
   let commands = [];
   if (!command){
-    return message.channel.send("Seeing help for all commands is currently disabled, to return soon!")
     let embed = new re.Discord.MessageEmbed()
     .setTitle(`Commands for ${client.user.username}`)
     .setAuthor(message.author.tag, message.author.avatarURL())
     .setColor(re.config.color)
+    // .setFooter(`Use the command ${message.prefix}help <command> to get more info on a specific command!`)
     let modulecommands = []
-    // client.commands.forEach(command => {
-    //   if(command.help.module === "bot"){
-    //     if(!modulecommands.find(c => c == command.help.name)){
-    //       modulecommands.push(command.help.name)
-    //     }
-    //   }
-    // })
-    // let serverprefix = re.dbs.settings.get(message.guild.id+".prefix") || re.config.prefix
-    // embed.addField(`**Bot:**`, `${serverprefix}${modulecommands.join("\n" + serverprefix)}`, true)
-    await re.config.modules.forEach(async module => {
+    let modules = re.config.modules.concat(re.config.gmodules)
+    await modules.forEach(async module => {
       let modulecommandarray = []
       let modulecommands = ""
       client.commands.forEach(command => {
         if(command.help.module === module && !command.help.nohelp){
           if(!modulecommandarray.find(c => c == command.help.name)){
             modulecommandarray.push(command.help.name)
-            modulecommands += `**${re.config.prefix}${command.help.name}**\n - ${command.help.description}\n`
+            cantuse = false
+            if(message.author.botperms.level < command.help.access.level) cantuse = true
+            if(command.help.access.mm && !message.author.botperms.mm.includes(command.help.access.mm)) cantuse = true
+            if(!cantuse || (!cantuse && !showall)) modulecommands += `${cantuse ? "~~" : ""}\\${message.prefix}${command.help.name}${cantuse ? "~~" : ""}\n`
           }
         }
       })
-      let serverprefix = re.config.prefix
-      if(module == "bot" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "utility && modulecommands.length > 0") await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "fun" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "mod" && message.member.roles.cache.get("694962620914204672")  && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "economy" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "war" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "economymanager" && message.member.roles.cache.get("710614561668989018") && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "factions" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "staff" && message.member.roles.cache.get("712070389815312385") && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "dev" && message.author.id === re.config.ownerID && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
+      if(modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands, true)
     })
-    
-    await re.config.tckcmodules.forEach(async module => {
-      let modulecommandarray = []
-      let modulecommands = ""
-      client.commands.forEach(command => {
-        if(command.help.module === module && !command.help.nohelp){
-          if(!modulecommandarray.find(c => c == command.help.name)){
-            modulecommandarray.push(command.help.name)
-            modulecommands += `**${re.config.prefix}${command.help.name}**\n - ${command.help.description}\n`
-          }
-        }
-      })
-      if(message.guild.id != re.config.server) return
-      let serverprefix = re.config.prefix
-      if(module == "bot" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "utility && modulecommands.length > 0") await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "fun" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "mod" && message.member.roles.cache.get("694962620914204672")  && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "economy" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "war" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "economymanager" && message.member.roles.cache.get("710614561668989018") && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "factions" && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "staff" && message.member.roles.cache.get("712070389815312385") && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-      if(module == "dev" && message.author.id === re.config.ownerID && modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands)
-    })
-    
+    embed.addField("Note:", `${showall ? `If a command is crossed out, you do not have access to use it` : `Use \`${message.prefix}help all\` to see all commands, even those you don't have access to`}\nUse the command \`${message.prefix}help <command>\` to get more info on a specific command!`)
     message.channel.send(embed)
   }
   else{
@@ -85,21 +50,21 @@ module.exports.run = async (client, message, args) => {
         },
         {
           name:`Syntax:`, 
-          value:`\`${props.help.syntax.replace("jejprefixjej", re.dbs.settings.get(message.guild.id+".prefix") || re.config.prefix)}\``
+          value:`\`${message.prefix}${props.help.syntax}\``
         },
-        // {
-        //   name:`Module:`, 
-        //   value:`${props.help.module}`
-        // },
         {
-          name:`Required ${props.help.access.mm ? "MM Permission" : "Permission Level"}:`, 
-          value:`${props.help.access.mm ? props.help.access.mm : `${props.help.access.level} - ${re.vars.botperms[props.help.access.level]}`}`
+          name:`Module:`, 
+          value:`${props.help.module}`
+        },
+        {
+          name:`Required Permission Level:`, 
+          value:`${props.help.access.level} - ${re.vars.botperms[props.help.access.level]}`
         }
       ]
     if (props.help.alias && props.help.alias.length > 0)
       embed.fields.push({
         name: `Aliases:`,
-        value: `\`${re.dbs.settings.get(message.guild.id+".prefix") || re.config.prefix}${props.help.alias.join("`, `" + re.dbs.settings.get(message.guild.id+".prefix") || re.config.prefix)}\``
+        value: `\`${message.prefix}${props.help.alias.join("`, `" + message.prefix)}\``
 });
     message.channel.send(embed);
   }
@@ -109,7 +74,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
     name:`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
     description:`Get help for any command, or list all commands`,
-    syntax:`${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <command>`,
+    syntax:`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <command>`,
     alias:["command"],
     module:`${__dirname.split(`/`).pop()}`,
     access: {level: 0}

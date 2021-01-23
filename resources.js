@@ -213,6 +213,7 @@ const vars = {
   fs: require(`fs`),
   ms: require(`ms`),
   fs: require("fs"),
+  tscwd: require('to-sentence-case-with-dot').default, 
   botperms: {
     0: "Unknown User / Bot",
     1: "Server Member",
@@ -255,6 +256,7 @@ const vars = {
 //Database tables
 const dbs = {
   resp: new vars.db.table("resp"),
+  ows: new vars.db.table("ows"),
   temp: new vars.db.table("temp")
 }
 
