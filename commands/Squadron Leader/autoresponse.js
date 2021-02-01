@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
     ar.map(
       (x) => `${x.ID} - ${x.data.response} (Created by <@${x.data.createdBy}>)`
     )
-    message.channel.send(re.Discord.Util.cleanContent(ar.join(" ")))
+    message.channel.send(re.Discord.Util.cleanContent(ar.join(" "), message))
   } else if (args[0] == "remove") {
     let ar = re.dbs.resp.get(args[1])
     if (!ar) return message.channel.send("That autoresponse doesn't exist!")
@@ -35,7 +35,7 @@ module.exports.help = {
   syntax: `${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} add <trigger> <response>
 ${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} remove <trigger>
 ${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} list`,
-  alias: ["copy"],
+  alias: ["ar"],
   module: `${__dirname.split(`/`).pop()}`,
   access: { level: 2 },
 }

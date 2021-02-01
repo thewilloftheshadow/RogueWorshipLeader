@@ -7,6 +7,7 @@ module.exports.run = async (client, message, args) => {
       name:client.user.tag,
       icon_url:client.user.avatarURL()
     },
+    color: re.config.color,
     fields:[
       {
         name:`**Latency:** \u200b \u200b \u200b \u200b \u200b \u200b \u200b`,

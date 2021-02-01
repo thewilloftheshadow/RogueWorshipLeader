@@ -13,10 +13,9 @@ module.exports.run = async (client, message, args) => {
     .setTitle(`Commands for ${client.user.username}`)
     .setAuthor(message.author.tag, message.author.avatarURL())
     .setColor(re.config.color)
-    // .setFooter(`Use the command ${message.prefix}help <command> to get more info on a specific command!`)
+    // .setFooter(`Use the command ${re.config.prefix}help <command> to get more info on a specific command!`)
     let modulecommands = []
-    let modules = re.config.modules.concat(re.config.gmodules)
-    await modules.forEach(async module => {
+    await re.config.modules.forEach(async module => {
       let modulecommandarray = []
       let modulecommands = ""
       client.commands.forEach(command => {
@@ -25,14 +24,14 @@ module.exports.run = async (client, message, args) => {
             modulecommandarray.push(command.help.name)
             cantuse = false
             if(message.author.botperms.level < command.help.access.level) cantuse = true
-            if(command.help.access.mm && !message.author.botperms.mm.includes(command.help.access.mm)) cantuse = true
-            if(!cantuse || (!cantuse && !showall)) modulecommands += `${cantuse ? "~~" : ""}\\${message.prefix}${command.help.name}${cantuse ? "~~" : ""}\n`
+            if(command.help.access.eval && !message.author.botperms.eval) cantuse = true
+            if(!cantuse || (!cantuse && !showall)) modulecommands += `${cantuse ? "~~" : ""}\\${re.config.prefix}${command.help.name}${cantuse ? "~~" : ""}\n`
           }
         }
       })
       if(modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands, true)
     })
-    embed.addField("Note:", `${showall ? `If a command is crossed out, you do not have access to use it` : `Use \`${message.prefix}help all\` to see all commands, even those you don't have access to`}\nUse the command \`${message.prefix}help <command>\` to get more info on a specific command!`)
+    //embed.addField("Note:", `${showall ? `If a command is crossed out, you do not have access to use it` : `Use \`${re.config.prefix}help all\` to see all commands, even those you don't have access to`}\nUse the command \`${re.config.prefix}help <command>\` to get more info on a specific command!`)
     message.channel.send(embed)
   }
   else{
@@ -50,7 +49,7 @@ module.exports.run = async (client, message, args) => {
         },
         {
           name:`Syntax:`, 
-          value:`\`${message.prefix}${props.help.syntax}\``
+          value:`\`${re.config.prefix}${props.help.syntax}\``
         },
         {
           name:`Module:`, 
@@ -58,13 +57,13 @@ module.exports.run = async (client, message, args) => {
         },
         {
           name:`Required Permission Level:`, 
-          value:`${props.help.access.level} - ${re.vars.botperms[props.help.access.level]}`
+          value:`${props.help.access.eval ? "Developer" : `${props.help.access.level} - ${re.vars.botperms[props.help.access.level]}`}`
         }
       ]
     if (props.help.alias && props.help.alias.length > 0)
       embed.fields.push({
         name: `Aliases:`,
-        value: `\`${message.prefix}${props.help.alias.join("`, `" + message.prefix)}\``
+        value: `\`${re.config.prefix}${props.help.alias.join("`, `" + re.config.prefix)}\``
 });
     message.channel.send(embed);
   }

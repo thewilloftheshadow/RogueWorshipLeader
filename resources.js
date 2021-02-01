@@ -1,6 +1,6 @@
-const config = require(`./config.json`)
+const config = require(`./config.js`)
 const Discord = require(`discord.js`)
-const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "USER"] })
+const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "USER"], fetchAllMembers: true})
 const func = {
   sleep: function(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -207,7 +207,7 @@ const func = {
 }
 const vars = {
   Discord: require(`discord.js`),
-  config: require(`./config.json`),
+  config: require(`./config.js`),
   db: require(`quick.db`),
   cmd: require(`node-cmd`),
   fs: require(`fs`),
@@ -216,9 +216,9 @@ const vars = {
   tscwd: require('to-sentence-case-with-dot').default, 
   botperms: {
     0: "Unknown User / Bot",
-    1: "Server Member",
-    2: "Server Admin",
-    3: "Bot Owner"
+    1: "Squadron Member",
+    2: "Squadron Leader",
+    3: "Commander"
   },
   permlist: {
     "0x00000001": "CREATE_INSTANT_INVITE",

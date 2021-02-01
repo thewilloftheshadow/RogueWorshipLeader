@@ -15,7 +15,7 @@ module.exports.help = {
     name:`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
     description:`Check botperms`,
     syntax:`${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <user>`,
-    alias:[],
+    alias:["bp"],
     module:`${__dirname.split(`/`).pop()}`,
     access: {level: 0}
 }

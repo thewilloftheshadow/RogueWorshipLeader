@@ -7,6 +7,7 @@ re.client.on("message", async message => {
   console.log(`${re.moment().format('MMMM Do YYYY, h:mm:ss a')} | ${message.author.tag} - ${message.content}`)
   message.author.botperms = re.func.botperms(message.author.id, message)
   message.member.botperms = message.author.botperms
+  message.re = re
   let args = message.content
       .slice(prefix.length)
       .trim()
