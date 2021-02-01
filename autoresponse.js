@@ -1,4 +1,4 @@
-const re = require(`../../resources.js`).data
+const re = require(`./resources.js`).data
 module.exports.run = async (client, message, args) => {
   if (!args[0] || ["add", "remove", "list"].includes(args[0])) args[0] == "list"
   if (args[0] == "list" || !args[0]) {
@@ -17,12 +17,15 @@ module.exports.run = async (client, message, args) => {
   } else if (args[0] == "add") {
     let ar = re.dbs.resp.get(args[1])
     if (ar) return message.channel.send("That autoresponse already exists!")
-    re.dbs.resp.set(args[1], {
-      response: args.shift(2).join(" "),
+    args.shift()
+    let trigger = args.shift()
+    console.log(trigger, args)
+    re.dbs.resp.set(trigger, {
+      response: args.join(" "),
       createdBy: message.author.id,
     })
     message.channel.send(
-      `Autoresponse created:\n\`\`\`fix\n${args[1]} - ${args
+      `Autoresponse created:\n\`\`\`fix\n${trigger} - ${args
         .splice(0, 2)
         .join(" ")} (Created by ${message.author.id})\n\`\`\``
     )

@@ -18,7 +18,7 @@ re.client.on("message", async message => {
       return message.channel.send(`["${args.join(`", "`)}"]`, {code:"js"})
     }
     let commandfile = re.client.commands.get(command);
-    if (!commandfile) return 
+    if (!commandfile) return message.channel.send("Command not found")
     if (message.author.bot && !commandfile.help.botcmd) return;
 
     

@@ -1,9 +1,13 @@
 const re = require(`../../resources.js`).data
 module.exports.run = async (client, message, args) => {
-  message.delete()
-  if(args.join(" ") === "") return
-  message.channel.send(args.join(" "), {disableMentions: "all"})
-  re.client.emit("botlog", new re.Discord.MessageEmbed().setTitle(`Say command used by ${message.author.tag}`).setDescription(`Message sent by <@${message.author.id}> in ${message.channel}:\n\`\`\`fix\n${args.join(" ")}\n\`\`\``))
+  message.delete().catch(()=>{}) // delete the command
+    let m = await message.channel.messages.fetch(args[0]).catch(()=>{}) // see if there is a message with the ID of the first argument of the command
+    if (m) { // if there is a message
+      args.shift() // remove the ID from the arguments
+      m.reply(args.join(" ")) // send the arguments joined with a space
+    } else { // if there isn't a message
+      message.channel.send(args.join(" ")) // send the arguments joined with a space
+    }
 };
 
 module.exports.help = {
