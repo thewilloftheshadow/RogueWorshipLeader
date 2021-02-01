@@ -14,7 +14,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
     name:`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
     description:`Check botperms`,
-    syntax:`${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <user>`,
+    syntax:`${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <user>`,
     alias:["bp"],
     module:`${__dirname.split(`/`).pop()}`,
     access: {level: 0}

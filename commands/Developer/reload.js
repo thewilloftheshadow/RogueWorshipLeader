@@ -29,7 +29,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
   description: `Reload the specified command`,
-  syntax: `${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <command>`,
+  syntax: `${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <command>`,
   alias: [],
   module: `${__dirname.split(`/`).pop()}`,
   access: {eval: true}

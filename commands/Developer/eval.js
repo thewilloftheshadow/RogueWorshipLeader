@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
   description: "Execute some code",
-  syntax: `${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
+  syntax: `${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
   alias: ["execute"],
   module: `${__dirname.split(`/`).pop()}`,
   access: {eval: true}

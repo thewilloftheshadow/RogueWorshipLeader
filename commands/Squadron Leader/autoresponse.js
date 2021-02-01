@@ -6,19 +6,19 @@ module.exports.run = async (client, message, args) => {
     ar.map(
       (x) => `${x.ID} - ${x.data.response} (Created by <@${x.data.createdBy}>)`
     )
-    message.channel.send(re.Discord.Util.cleanContent(ar.join(" "), message))
+    message.channel.send(re.Discord.Util.cleanContent(ar.join(" "), message), {split: "\n"})
   } else if (args[0] == "remove") {
     let ar = re.dbs.resp.get(args[1])
     if (!ar) return message.channel.send("That autoresponse doesn't exist!")
     re.dbs.resp.delete(args[1])
     message.channel.send(
-      `Autoresponse deleted:\n\`\`\`fix\n${args[1]} - ${ar.response} (Created by ${x.data.createdBy})\n\`\`\``
+      `Autoresponse deleted:\n\`\`\`fix\n${args[1]} - ${ar.response} (Created by ${ar.createdBy})\n\`\`\``
     )
   } else if (args[0] == "add") {
     let ar = re.dbs.resp.get(args[1])
     if (ar) return message.channel.send("That autoresponse already exists!")
     re.dbs.resp.set(args[1], {
-      response: args.splice(0, 2).join(" "),
+      response: args.shift(2).join(" "),
       createdBy: message.author.id,
     })
     message.channel.send(
@@ -32,9 +32,9 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
   description: "Manage autoresponses",
-  syntax: `${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} add <trigger> <response>
-${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} remove <trigger>
-${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} list`,
+  syntax: `${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} add <trigger> <response>
+${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} remove <trigger>
+${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} list`,
   alias: ["ar"],
   module: `${__dirname.split(`/`).pop()}`,
   access: { level: 2 },

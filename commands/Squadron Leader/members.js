@@ -16,7 +16,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
   description: "List members in a role",
-  syntax: `${re.func.getPrefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <role>`,
+  syntax: `${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <role>`,
   alias: ["inrole"],
   module: `${__dirname.split(`/`).pop()}`,
   access: {level: 2}

@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
   description: `See the current result of the one word story`,
-  syntax: `${re.func.getPrefix}${__filename
+  syntax: `${re.config.prefix}${__filename
     .split(`${__dirname}/`)
     .pop()
     .split(`.`)
