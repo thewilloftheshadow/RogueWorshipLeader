@@ -1,7 +1,7 @@
 const re = require(`../../resources.js`).data
 module.exports.run = async (client, message, args) => {
   let channel = re.config.ows[0] // TODO: support multiple ows
-  let story = re.vars.tscwd(re.db.ows.get(`${channel}.words`).join(" "))
+  let story = re.vars.tscwd(re.dbs.ows.get(`${channel}.words`).join(" "))
   message.channel.send(re.Discord.Util.cleanContent(story, message), {
     split: { char: "." },
   })

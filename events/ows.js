@@ -1,10 +1,10 @@
 // one word story handler
 const re = require(`../resources.js`).data
 re.client.on("message", (message) => {
-  return; //disable ows
-    if(!config.ows.includes(message.channel.id)) return //ignore non-one word story channel
+    if(!re.config.ows == message.channel.id) return //ignore non-one word story channel
     let data = re.dbs.ows.get(message.channel.id)
-    if(data.ended) return; //ignore ended ows
+    if(!data) return;
+    if(data.ended) return message.delete(); //ignore ended ows
   
     if(data.lastUser == message.author.id) return message.delete() // if the last user and new user are the same, delete message
     
