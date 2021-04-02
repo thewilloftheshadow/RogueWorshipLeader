@@ -1,5 +1,5 @@
 module.exports = {
-  "modules": ["Bot", "Fun", "Squadron Leader", "Commander", "Developer"],
+  "modules": ["Bot", "Fun", "Squadron Leader", "Commander", "Lieutenant", "Developer"],
   "prefix": "^",
   "ownerID": "439223656200273932",
   "color": "#A43726",
@@ -10,7 +10,8 @@ module.exports = {
     "handlers": false
   },
   "roles": {
-    "staff": "791044221803954188",
+    "lieutenant": "812746192081256461",
+    "squadleader": "791044221803954188",
     "admin": "791042957880328202"
   },
   "server": "791037986984820776",

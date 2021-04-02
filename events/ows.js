@@ -11,6 +11,6 @@ re.client.on("message", (message) => {
     let words = message.content.split(/ /g) // split message content by spaces
     if(words.length > 1) return message.delete() // if there is more than one word, delete message
   
-    db.set(`${message.channel.id}.lastUser`, message.author.id) // save ID of user who successfully sent a message
-    db.push(`${message.channel.id}.words`, message.content)
+    re.dbs.ows.set(`${message.channel.id}.lastUser`, message.author.id) // save ID of user who successfully sent a message
+    re.dbs.ows.push(`${message.channel.id}.words`, message.content)
   })

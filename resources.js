@@ -1,117 +1,84 @@
 const config = require(`./config.js`)
 const Discord = require(`discord.js`)
-const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "USER"], fetchAllMembers: true})
+const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "USER"], fetchAllMembers: true })
 const func = {
-  sleep: function(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  sleep: function (ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
   },
-  prettyNumber: function(number) {
+  prettyNumber: function (number) {
     if (!typeof number === "string") number = number.toString()
     number.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   },
-  capitalizeFirstLetter: function(string) {
+  capitalizeFirstLetter: function (string) {
     if (typeof string == undefined) return
     var firstLetter = string[0] || string.charAt(0)
     return firstLetter ? string.replace(/^./, firstLetter.toUpperCase()) : ""
   },
-  clean: function(text) {
-    if (typeof text === "string")
-      return text
-        .replace(/`/g, "`" + String.fromCharCode(8203))
-        .replace(/@/g, "@" + String.fromCharCode(8203))
+  clean: function (text) {
+    if (typeof text === "string") return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203))
     else return text
   },
-  formatClean: function(text) {
-    if (typeof text === "string")
-      return text
-        .replace(/`/g, "")
-        .replace(/@/g, "@" + String.fromCharCode(8203))
+  formatClean: function (text) {
+    if (typeof text === "string") return text.replace(/`/g, "").replace(/@/g, "@" + String.fromCharCode(8203))
     else return text
   },
-  getRandom: function(min, max) {
+  getRandom: function (min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min)) + min
   },
-  capFirstLetter: function(string) {
+  capFirstLetter: function (string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   },
-  getMemoryUsage: function() {
+  getMemoryUsage: function () {
     let total_rss = require("fs")
       .readFileSync("/sys/fs/cgroup/memory/memory.stat", "utf8")
       .split("\n")
-      .filter(l => l.startsWith("total_rss"))[0]
+      .filter((l) => l.startsWith("total_rss"))[0]
       .split(" ")[1]
     return (process.memoryUsage().heapUsed / (1024 * 1024)).toFixed(2)
   },
-  botperms: function(userid, message){
-    if(userid instanceof Discord.GuildMember) userid = userid.id
-    if(userid instanceof Discord.User) userid = userid.id
+  botperms: function (userid, message) {
+    if (userid instanceof Discord.GuildMember) userid = userid.id
+    if (userid instanceof Discord.User) userid = userid.id
     let perms = {
       level: 1,
       eval: false,
-      bot: false
+      bot: false,
     }
     let permmem = message.guild ? message.guild.members.cache.get(userid) : message.client.users.cache.get(userid)
-    
-    if(message.guild){
-      if(permmem.roles.cache.has(config.roles.staff)) perms.level = 2
-      if(permmem.roles.cache.has(config.roles.admin)) perms.level = 3
+
+    if (message.guild) {
+      if (permmem.roles.cache.has(config.roles.lieutenant)) perms.level = 2
+      if (permmem.roles.cache.has(config.roles.squadleader)) perms.level = 3
+      if (permmem.roles.cache.has(config.roles.admin)) perms.level = 4
     }
-    if(userid === config.ownerID) perms.eval = true
-    if(permmem.user.bot) perms = {
-      level: 0,
-      eval: false,
-      bot: true
-    }
+    if (userid === config.ownerID) perms.eval = true
+    if (permmem.user.bot)
+      perms = {
+        level: 0,
+        eval: false,
+        bot: true,
+      }
     return perms
   },
-  getuser: function(input, message) {
+  getuser: function (input, message) {
     if (!input) return message.member
     let target = message.mentions.members.first()
     if (target == null) {
-      target = message.guild.members.cache.find(
-        member =>
-          member.user.tag === input ||
-          member.user.id === input ||
-          member.user.username === input ||
-          (member.nickname !== null && member.nickname === input)
-      )
+      target = message.guild.members.cache.find((member) => member.user.tag === input || member.user.id === input || member.user.username === input || (member.nickname !== null && member.nickname === input))
     }
     if (target == null) {
-      target = message.guild.members.cache.find(
-        member =>
-          member.user.username.toLowerCase() +
-            "#" +
-            member.user.discriminator ===
-            input.toLowerCase() ||
-          member.user.username.toLowerCase() === input.toLowerCase() ||
-          (member.nickname !== null &&
-            member.nickname.toLowerCase() === input.toLowerCase())
-      )
+      target = message.guild.members.cache.find((member) => member.user.username.toLowerCase() + "#" + member.user.discriminator === input.toLowerCase() || member.user.username.toLowerCase() === input.toLowerCase() || (member.nickname !== null && member.nickname.toLowerCase() === input.toLowerCase()))
     }
     if (target == null) {
-      target = message.guild.members.cache.find(
-        member =>
-          member.user.username.startsWith(input) ||
-          member.user.username.toLowerCase().startsWith(input.toLowerCase())
-      )
+      target = message.guild.members.cache.find((member) => member.user.username.startsWith(input) || member.user.username.toLowerCase().startsWith(input.toLowerCase()))
     }
     if (target == null) {
-      target = message.guild.members.cache.find(
-        member =>
-          (member.nickname !== null && member.nickname.startsWith(input)) ||
-          (member.nickname !== null &&
-            member.nickname.toLowerCase().startsWith(input.toLowerCase()))
-      )
+      target = message.guild.members.cache.find((member) => (member.nickname !== null && member.nickname.startsWith(input)) || (member.nickname !== null && member.nickname.toLowerCase().startsWith(input.toLowerCase())))
     }
     if (target == null) {
-      target = message.guild.members.cache.find(
-        member =>
-          member.user.username.toLowerCase().includes(input.toLowerCase()) ||
-          (member.nickname !== null &&
-            member.nickname.toLowerCase().includes(input.toLowerCase()))
-      )
+      target = message.guild.members.cache.find((member) => member.user.username.toLowerCase().includes(input.toLowerCase()) || (member.nickname !== null && member.nickname.toLowerCase().includes(input.toLowerCase())))
     }
     return target
   },
@@ -123,36 +90,19 @@ const func = {
       await msg.react("▶")
       await msg.react("⏩")
     }
-    let reaction = await msg
-      .awaitReactions(
-        (reaction, user) =>
-          user.id == author &&
-          ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name),
-        { time: 30 * 1000, max: 1, errors: ["time"] }
-      )
-      .catch(() => {})
+    let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
     if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
-    if (
-      msg.channel.type == "dm" ||
-      !msg.guild.me.hasPermission("MANAGE_MESSAGES")
-    ) {
+    if (msg.channel.type == "dm" || !msg.guild.me.hasPermission("MANAGE_MESSAGES")) {
       if (reaction.emoji.name == "◀") {
         let m = await msg.channel.send(embeds[Math.max(pageNow - 1, 0)])
         msg.delete()
         func.paginator(author, m, embeds, Math.max(pageNow - 1, 0))
       } else if (reaction.emoji.name == "▶") {
-        let m = await msg.channel.send(
-          embeds[Math.min(pageNow + 1, embeds.length - 1)]
-        )
+        let m = await msg.channel.send(embeds[Math.min(pageNow + 1, embeds.length - 1)])
         msg.delete()
-        func.paginator(
-          author,
-          m,
-          embeds,
-          Math.min(pageNow + 1, embeds.length - 1)
-        )
+        func.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1))
       } else if (reaction.emoji.name == "⏪") {
         let m = await msg.channel.send(embeds[0])
         msg.delete()
@@ -170,13 +120,7 @@ const func = {
       } else if (reaction.emoji.name == "▶") {
         await reaction.users.remove(author)
         let m = await msg.edit(embeds[Math.min(pageNow + 1, embeds.length - 1)])
-        func.paginator(
-          author,
-          m,
-          embeds,
-          Math.min(pageNow + 1, embeds.length - 1),
-          false
-        )
+        func.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1), false)
       } else if (reaction.emoji.name == "⏪") {
         await reaction.users.remove(author)
         let m = await msg.edit(embeds[0])
@@ -188,7 +132,7 @@ const func = {
       }
     }
   },
-  randomString: function(len) {
+  randomString: function (len) {
     let buf = [],
       chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
       charlen = chars.length
@@ -199,11 +143,9 @@ const func = {
 
     return buf.join("")
   },
-  getEmoji: function(name) {
-    return client.emojis.cache.find(
-      emoji => emoji.name.toLowerCase() == name.toLowerCase().replace(/ /g, "_")
-    )
-  }
+  getEmoji: function (name) {
+    return client.emojis.cache.find((emoji) => emoji.name.toLowerCase() == name.toLowerCase().replace(/ /g, "_"))
+  },
 }
 const vars = {
   Discord: require(`discord.js`),
@@ -213,12 +155,13 @@ const vars = {
   fs: require(`fs`),
   ms: require(`ms`),
   fs: require("fs"),
-  tscwd: require('to-sentence-case-with-dot').default, 
+  tscwd: require("to-sentence-case-with-dot").default,
   botperms: {
     0: "Unknown User / Bot",
     1: "Squadron Member",
-    2: "Squadron Leader",
-    3: "Commander"
+    2: "Lieutenant",
+    3: "Squadron Leader",
+    4: "Commander",
   },
   permlist: {
     "0x00000001": "CREATE_INSTANT_INVITE",
@@ -250,14 +193,15 @@ const vars = {
     "0x08000000": "MANAGE_NICKNAMES",
     "0x10000000": "MANAGE_ROLES",
     "0x20000000": "MANAGE_WEBHOOKS",
-    "0x40000000": "MANAGE_EMOJIS"
-  }
+    "0x40000000": "MANAGE_EMOJIS",
+  },
 }
 //Database tables
 const dbs = {
   resp: new vars.db.table("resp"),
   ows: new vars.db.table("ows"),
-  temp: new vars.db.table("temp")
+  temp: new vars.db.table("temp"),
+  master: new vars.db.table("master"),
 }
 
 dbs.list = Object.getOwnPropertyNames(dbs)
@@ -272,7 +216,7 @@ exports.data = {
   dbs: dbs,
   client: client,
   Discord: Discord,
-  config: vars.config
+  config: vars.config,
 }
 
 exports.data.list = Object.getOwnPropertyNames(exports.data)

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "array-pull": "^0.2.1",
+    "discord-starboards": "^2.2.3",
     "discord.js": "github:discordjs/discord.js",
     "dotenv": "^8.2.0",
     "luxon": "^1.25.0",
