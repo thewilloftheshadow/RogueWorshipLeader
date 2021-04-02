@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args) => {
   }
   client.commands.delete(command);
   
-  delete require.cache[require.resolve(`/home/sd/rwl/commands/${module}/${commandfile.help.name}.js`)]
+  delete require.cache[require.resolve(`${process.cwd()}/commands/${module}/${commandfile.help.name}.js`)]
 
   let props = require(`../${module}/${commandfile.help.name}`);
   console.log(`Reload: Command "${command}" loaded`);

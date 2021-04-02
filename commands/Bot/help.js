@@ -13,7 +13,7 @@ module.exports.run = async (client, message, args) => {
     .setTitle(`Commands for ${client.user.username}`)
     .setAuthor(message.author.tag, message.author.avatarURL())
     .setColor(re.config.color)
-    // .setFooter(`Use the command ${re.config.prefix}help <command> to get more info on a specific command!`)
+    .setFooter(`Use the command ${re.config.prefix}help <command> to get more info on a specific command!`)
     let modulecommands = []
     await re.config.modules.forEach(async module => {
       let modulecommandarray = []
