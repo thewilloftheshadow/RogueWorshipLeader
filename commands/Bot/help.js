@@ -49,11 +49,7 @@ module.exports.run = async (client, message, args) => {
         },
         {
           name:`Syntax:`, 
-          value:`\`${re.config.prefix}${props.help.syntax}\``
-        },
-        {
-          name:`Module:`, 
-          value:`${props.help.module}`
+          value:`\`${props.help.syntax.startsWith(re.config.prefix) ? '' : re.config.prefix}${props.help.syntax}\``
         },
         {
           name:`Required Permission Level:`, 
@@ -74,7 +70,7 @@ module.exports.help = {
     name:`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
     description:`Get help for any command, or list all commands`,
     syntax:`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <command>`,
-    alias:["command"],
+    alias:["command", "h"],
     module:`${__dirname.split(`/`).pop()}`,
     access: {level: 0}
 }

@@ -13,5 +13,5 @@ module.exports.help = {
   syntax: `${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
   alias: ["reboot"],
   module: `${__dirname.split(`/`).pop()}`,
-  access: {eval: true}
+  access: {level: 3}
 }

@@ -10,9 +10,9 @@ re.client.starboardsManager.on("starboardReactionNsfw", (emoji, message, user) =
 })
 
 re.client.starboardsManager.on("starboardNoSelfStar", (emoji, message, user) => {
-  message.channel.send(`You cannot ${emoji} your own messages.`)
+  message.author.send(`You cannot ${re.client.emojis.cache.get(emoji)} your own messages.`)
 })
 
 re.client.starboardsManager.on("starboardNoEmptyMsg", (emoji, message, user) => {
-  message.channel.send(`You cannot ${emoji} an empty message.`)
+  message.channel.send(`You cannot ${re.client.emojis.cache.get(emoji)} an empty message.`)
 })

@@ -15,12 +15,12 @@ re.client.on("message", async (message) => {
     return message.channel.send(`["${args.join(`", "`)}"]`, { code: "js" })
   }
   let commandfile = re.client.commands.get(command)
-  if (!commandfile) return message.channel.send("Command not found")
+  if (!commandfile) return //message.channel.send("Command not found")
   if (message.author.bot && !commandfile.help.botcmd) return
 
   let cmdaccess = commandfile.help.access
   if (!message.guild && !commandfile.help.access.dm) return
-  if (cmdaccess.level > message.member.botperms.level) {
+  if ((cmdaccess.level > message.member.botperms.level) && (!cmdaccess.bypass)) {
     return message.channel.send(`Sorry! This command requires Level ${cmdaccess.level} permissions, but you only have Level ${message.member.botperms.level} permissions.`)
   }
   if (cmdaccess.eval && !message.member.botperms.eval) return message.channel.send(`Sorry! This command requires you to be the bot owner!.`)

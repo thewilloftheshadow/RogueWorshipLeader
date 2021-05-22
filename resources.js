@@ -45,26 +45,33 @@ const func = {
       level: 1,
       eval: false,
       bot: false,
+      bypass: false,
     }
-    let permmem = message.guild ? message.guild.members.cache.get(userid) : message.client.users.cache.get(userid)
+    let permmem = message.guild ? message.guild.members.fetch(userid) : message.client.users.cache.get(userid)
 
     if (message.guild) {
       if (permmem.roles.cache.has(config.roles.lieutenant)) perms.level = 2
       if (permmem.roles.cache.has(config.roles.squadleader)) perms.level = 3
       if (permmem.roles.cache.has(config.roles.admin)) perms.level = 4
+      if (permmem.id == message.guild.ownerID) perms.bypass = true
     }
     if (userid === config.ownerID) perms.eval = true
-    if (permmem.user.bot)
+    if (userid === config.ownerID) perms.bypass = true
+    if (permmem.user?.bot)
       perms = {
         level: 0,
         eval: false,
         bot: true,
+        bypass: false
       }
     return perms
   },
   getuser: function (input, message) {
     if (!input) return message.member
     let target = message.mentions.members.first()
+    if (target == null) {
+      target = message.guild.members.fetch(input)
+    }
     if (target == null) {
       target = message.guild.members.cache.find((member) => member.user.tag === input || member.user.id === input || member.user.username === input || (member.nickname !== null && member.nickname === input))
     }
@@ -146,6 +153,11 @@ const func = {
   getEmoji: function (name) {
     return client.emojis.cache.find((emoji) => emoji.name.toLowerCase() == name.toLowerCase().replace(/ /g, "_"))
   },
+  level: function (xp) {
+    let levelXP = 5 / 6 * xp * (2 * xp * xp + 27 * xp + 91);
+    let remainingXP = levelXP - xp;
+    return {levelXP, remainingXP/*, currentLevel, nextLevel: currentLevel + 1*/}
+  }
 }
 const vars = {
   Discord: require(`discord.js`),
@@ -154,7 +166,8 @@ const vars = {
   cmd: require(`node-cmd`),
   fs: require(`fs`),
   ms: require(`ms`),
-  fs: require("fs"),
+  pull: require("array-pull"),
+  randomColor: require("random-color"),
   tscwd: require("to-sentence-case-with-dot").default,
   botperms: {
     0: "Unknown User / Bot",
@@ -201,7 +214,9 @@ const dbs = {
   resp: new vars.db.table("resp"),
   ows: new vars.db.table("ows"),
   temp: new vars.db.table("temp"),
+  levels: new vars.db.table("levels"),
   master: new vars.db.table("master"),
+  facts: new vars.db.table("facts"),
 }
 
 dbs.list = Object.getOwnPropertyNames(dbs)
