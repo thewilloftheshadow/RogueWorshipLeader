@@ -9,7 +9,7 @@ cmds.forEach(x => {
 		let i = re.func.getRandom(0, f.length)
 		console.log(i)
 		let fact = f[i]
-		message.channel.send(new re.Discord.MessageEmbed().setTitle("Did you know...").setThumbnail(message.guild.iconURL()).setDescription(fact.text).setFooter(`ID: ${fact.id}`).setColor(re.vars.randomColor().hexString()))
+		message.channel.send(new re.Discord.MessageEmbed().setTitle("True story...").setThumbnail(message.guild.iconURL()).setDescription(fact.text).setFooter(`ID: ${fact.id}`).setColor(re.vars.randomColor().hexString()))
 	},
 		help: {
 			name: `${x}`,

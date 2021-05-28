@@ -47,7 +47,7 @@ const func = {
       bot: false,
       bypass: false,
     }
-    let permmem = message.guild ? message.guild.members.fetch(userid) : message.client.users.cache.get(userid)
+    let permmem = message.guild ? message.guild.members.cache.get(userid) : message.client.users.cache.get(userid)
 
     if (message.guild) {
       if (permmem.roles.cache.has(config.roles.lieutenant)) perms.level = 2

@@ -18,5 +18,5 @@ module.exports.help = {
   syntax: `${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <fact ID>`,
   alias: ["newfact"],
   module: `${__dirname.split(`/`).pop()}`,
-  access: {level: 3}
+  access: {level: 2}
 }

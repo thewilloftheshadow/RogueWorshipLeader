@@ -1,5 +1,5 @@
 module.exports = {
-  "modules": ["Bot", "Fun", "Squadron Leader", "Commander", "Lieutenant", "Developer"],
+  "modules": ["Bot", "Fun", "Facts", "Squadron Leader", "Commander", "Lieutenant", "Developer"],
   "prefix": "^",
   "ownerID": "439223656200273932",
   "color": "#A43726",
