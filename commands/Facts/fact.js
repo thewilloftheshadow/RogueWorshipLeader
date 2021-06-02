@@ -27,7 +27,12 @@ cmds.forEach(x => {
 
 
 module.exports.run = async (client, message, args) => {
-  message.channel.send(`Current fact commands:\n\`\`\`${re.config.prefix}${cmds.join("\n" + re.config.prefix)}\`\`\``)
+	if(!args[0]) return message.channel.send(`Current fact commands:\n\`\`\`${re.config.prefix}${cmds.join("\n" + re.config.prefix)}\`\`\``)
+	let category = re.dbs.facts.get(args[0])
+	if(!category) return message.channel.send("Unknown fact command! Use this command without any arguments to see all the fact commands")
+	let fact = category.find(x => x.id == args[1])
+	if(!category) return message.channel.send("Unknown fact!")
+	message.channel.send(new re.Discord.MessageEmbed().setTitle("True story...").setThumbnail(message.guild.iconURL()).setDescription(fact.text).setFooter(`ID: ${fact.id}`).setColor(re.vars.randomColor().hexString()))
 }
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
