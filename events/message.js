@@ -1,6 +1,6 @@
 const re = require(`../resources.js`).data
 re.client.on("message", async (message) => {
-  if (message.guild && message.guild.id != re.config.server) return
+  //if (message.guild && message.guild.id != re.config.server) return
   let prefix = re.config.prefix
   if (!message.content.toLowerCase().startsWith(prefix.toLowerCase()) && message.guild) return
   if (re.config.blacklist.includes(message.author.id)) return await message.react("🙉")

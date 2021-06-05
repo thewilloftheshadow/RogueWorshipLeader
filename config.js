@@ -16,7 +16,7 @@ module.exports = {
   },
   "server": "791037986984820776",
   "blacklist": [],
-  "ows": ["801252279855611924"], //channels for one word story
+  "ows": ["850837015310237747"], //channels for one word story
   "r2d2": {
     messages: [
       //messages that can be sent

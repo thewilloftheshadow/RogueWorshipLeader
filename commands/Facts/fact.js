@@ -1,6 +1,10 @@
 const re = require(`../../resources.js`).data
 let f = re.dbs.facts.all()
 let cmds = f.map((x) => x.ID)
+let cmdslist = f.map((x) => {
+	let as = re.dbs.facts.get(x.ID)
+	return `${x.ID} - ${as.length} facts`
+})
 
 cmds.forEach(x => {
 	let generate = {
@@ -27,7 +31,7 @@ cmds.forEach(x => {
 
 
 module.exports.run = async (client, message, args) => {
-	if(!args[0]) return message.channel.send(`Current fact commands:\n\`\`\`${re.config.prefix}${cmds.join("\n" + re.config.prefix)}\`\`\``)
+	if(!args[0]) return message.channel.send(`Current fact commands:\n\`\`\`${re.config.prefix}${cmdslist.join("\n" + re.config.prefix)}\`\`\``)
 	let category = re.dbs.facts.get(args[0])
 	if(!category) return message.channel.send("Unknown fact command! Use this command without any arguments to see all the fact commands")
 	let fact = category.find(x => x.id == args[1])

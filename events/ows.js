@@ -1,7 +1,7 @@
 // one word story handler
 const re = require(`../resources.js`).data
 re.client.on("message", (message) => {
-    if(!re.config.ows == message.channel.id) return //ignore non-one word story channel
+    if(!re.config.ows.includes(message.channel.id)) return //ignore non-one word story channel
     let data = re.dbs.ows.get(message.channel.id)
     if(!data) return;
     if(data.ended) return message.delete(); //ignore ended ows
