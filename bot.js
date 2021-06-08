@@ -41,5 +41,8 @@ const manager = new StarboardsManagerCustomDb(re.client, {
 });
 re.client.starboardsManager = manager;
 
+let xpcd = new re.Discord.Collection()
+re.client.xpcd = xpcd
+
 require("./handlers")(re.client);
 

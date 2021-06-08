@@ -38,7 +38,7 @@ const func = {
       .split(" ")[1]
     return (process.memoryUsage().heapUsed / (1024 * 1024)).toFixed(2)
   },
-  botperms: function (userid, message) {
+  botperms: async function (userid, message) {
     if (userid instanceof Discord.GuildMember) userid = userid.id
     if (userid instanceof Discord.User) userid = userid.id
     let perms = {
@@ -47,17 +47,23 @@ const func = {
       bot: false,
       bypass: false,
     }
-    let permmem = message.guild ? message.guild.members.cache.get(userid) : message.client.users.cache.get(userid)
-
-    if (message.guild) {
-      if (permmem.roles.cache.has(config.roles.lieutenant)) perms.level = 2
-      if (permmem.roles.cache.has(config.roles.squadleader)) perms.level = 3
-      if (permmem.roles.cache.has(config.roles.admin)) perms.level = 4
-      if (permmem.id == message.guild.ownerID) perms.bypass = true
+    let rwl = message.client.guilds.cache.get(config.server)
+    let permmem = rwl.members.cache.get(userid)
+if(!permmem) return {
+  level: 0,
+  eval: false,
+  bot: true,
+  bypass: false
+}
+    if (rwl) {
+      if (permmem?.roles.cache.has(config.roles.lieutenant)) perms.level = 2
+      if (permmem?.roles.cache.has(config.roles.squadleader)) perms.level = 3
+      if (permmem?.roles.cache.has(config.roles.admin)) perms.level = 4
+      //if (permmem.id == message.guild.ownerID) perms.bypass = true
     }
     if (userid === config.ownerID) perms.eval = true
     if (userid === config.ownerID) perms.bypass = true
-    if (permmem.user?.bot)
+    if (permmem?.user?.bot)
       perms = {
         level: 0,
         eval: false,
@@ -70,7 +76,7 @@ const func = {
     if (!input) return message.member
     let target = message.mentions.members.first()
     if (target == null) {
-      target = message.guild.members.fetch(input)
+      target = message.guild.members.fetch(input).catch(()=>{})
     }
     if (target == null) {
       target = message.guild.members.cache.find((member) => member.user.tag === input || member.user.id === input || member.user.username === input || (member.nickname !== null && member.nickname === input))
@@ -153,8 +159,8 @@ const func = {
   getEmoji: function (name) {
     return client.emojis.cache.find((emoji) => emoji.name.toLowerCase() == name.toLowerCase().replace(/ /g, "_"))
   },
-  level: function (xp) {
-    let levelXP = 5 / 6 * xp * (2 * xp * xp + 27 * xp + 91);
+  xp: function (level, xp) {
+    let levelXP = Math.floor(5 / 6 * level * (2 * level * level + 27 * level + 91));
     let remainingXP = levelXP - xp;
     return {levelXP, remainingXP/*, currentLevel, nextLevel: currentLevel + 1*/}
   }
@@ -219,6 +225,59 @@ const dbs = {
   facts: new vars.db.table("facts"),
 }
 
+const paginator = async (author, msg, embeds, pageNow, addReactions = true) => {
+  if(embeds.length === 1) return
+  if (addReactions) {
+    await msg.react("⏪")
+    await msg.react("◀")
+    await msg.react("▶")
+    await msg.react("⏩")
+  }
+  let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀","▶","⏪","⏩"].includes(reaction.emoji.name), {time: 30*1000, max:1, errors: ['time']}).catch(() => {})
+  if (!reaction) return msg.reactions.removeAll().catch(() => {})
+  reaction = reaction.first()
+  //console.log(msg.member.users.tag)
+  if (msg.channel.type == 'dm' || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
+    if (reaction.emoji.name == "◀") {
+      let m = await msg.channel.send(embeds[Math.max(pageNow-1, 0)])
+      msg.delete()
+      paginator(author, m, embeds, Math.max(pageNow-1, 0))
+    } else if (reaction.emoji.name == "▶") {
+      let m = await msg.channel.send(embeds[Math.min(pageNow+1, embeds.length-1)])
+      msg.delete()
+      paginator(author, m, embeds, Math.min(pageNow+1, embeds.length-1))
+    } else if (reaction.emoji.name == "⏪") {
+      let m = await msg.channel.send(embeds[0])
+      msg.delete()
+      paginator(author, m, embeds, 0)
+    } else if (reaction.emoji.name == "⏩") {
+      let m = await msg.channel.send(embeds[embeds.length-1])
+      msg.delete()
+      paginator(author, m, embeds, embeds.length-1)
+    }
+  }
+  else {
+    if (reaction.emoji.name == "◀") {
+      await reaction.users.remove(author)
+      let m = await msg.edit(embeds[Math.max(pageNow-1, 0)])
+      paginator(author, m, embeds, Math.max(pageNow-1, 0), false)
+    } else if (reaction.emoji.name == "▶") {
+      await reaction.users.remove(author)
+      let m = await msg.edit(embeds[Math.min(pageNow+1, embeds.length-1)])
+      paginator(author, m, embeds, Math.min(pageNow+1, embeds.length-1), false)
+    } else if (reaction.emoji.name == "⏪") {
+      await reaction.users.remove(author)
+      let m = await msg.edit(embeds[0])
+      paginator(author, m, embeds, 0, false)
+    } else if (reaction.emoji.name == "⏩") {
+      await reaction.users.remove(author)
+      let m = await msg.edit(embeds[embeds.length-1])
+      paginator(author, m, embeds, embeds.length-1, false)
+    }
+  }
+}
+
+
 dbs.list = Object.getOwnPropertyNames(dbs)
 vars.list = Object.getOwnPropertyNames(vars)
 func.list = Object.getOwnPropertyNames(func)
@@ -232,6 +291,7 @@ exports.data = {
   client: client,
   Discord: Discord,
   config: vars.config,
+  paginator
 }
 
 exports.data.list = Object.getOwnPropertyNames(exports.data)
