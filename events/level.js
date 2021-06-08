@@ -16,8 +16,10 @@ re.client.on("message", async (message) => {
     data.level += 1
     data.xp = Math.abs(calc.remainingXP)
     let msg = `<@${message.author.id}>, congrats on leveling up to Level ${data.level}!`
+    let embed = new re.Discord.MessageEmbed().setDescription(message.content).setColor(0x58AE47).setAuthor(message.author.tag, message.author.avatarURL())
     let lu = message.guild.channels.cache.find(x => ["level-up", "leveling", "level"].includes(x.name))
     lu ? lu.send(msg).catch(() => message.channel.send(msg)) : message.channel.send(msg)
+    lu ? lu.send(embed).catch(() => message.channel.send(embed)) : message.channel.send(embed)
   }
   re.dbs.levels.set(`${message.guild.id}.${message.author.id}`, data)
   re.client.xpcd.set(`${message.guild.id}-${message.author.id}`, Date.now())
