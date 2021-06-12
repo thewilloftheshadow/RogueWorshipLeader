@@ -17,13 +17,14 @@ re.client.on("message", async (message) => {
   let commandfile = re.client.commands.get(command)
   if (!commandfile) return //message.channel.send("Command not found")
   if (message.author.bot && !commandfile.help.botcmd) return
+  if ((!message.author.bot/* && !message.member.botperms.bypass*/) && commandfile.help.botcmd) return message.channel.send("Only bots can use this command!")
 
   let cmdaccess = commandfile.help.access
   if (!message.guild && !commandfile.help.access.dm) return
-  if ((cmdaccess.level > message.member.botperms.level) && (!cmdaccess.bypass)) {
+  if ((cmdaccess.level > message.member.botperms.level) && (!message.member.botperms.bypass)) {
     return message.channel.send(`Sorry! This command requires Level ${cmdaccess.level} permissions, but you only have Level ${message.member.botperms.level} permissions.`)
   }
-  if (cmdaccess.eval && !message.member.botperms.eval) return message.channel.send(`Sorry! This command requires you to be the bot owner!.`)
+  if (cmdaccess.eval && !message.member.botperms.eval) return message.channel.send(`Sorry! This command requires you to be the bot owner!`)
 
   try {
     await commandfile.run(re.client, message, args)

@@ -1,6 +1,8 @@
 const config = require(`./config.js`)
 const Discord = require(`discord.js`)
 const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "USER"], fetchAllMembers: true })
+const unbClient = require("unb-api").Client
+const unb = new unbClient(process.env.UNB)
 const func = {
   sleep: function (ms) {
     return new Promise((resolve) => setTimeout(resolve, ms))
@@ -49,12 +51,13 @@ const func = {
     }
     let rwl = message.client.guilds.cache.get(config.server)
     let permmem = rwl.members.cache.get(userid)
-if(!permmem) return {
-  level: 0,
-  eval: false,
-  bot: true,
-  bypass: false
-}
+    if (!permmem)
+      return {
+        level: 0,
+        eval: false,
+        bot: true,
+        bypass: false,
+      }
     if (rwl) {
       if (permmem?.roles.cache.has(config.roles.lieutenant)) perms.level = 2
       if (permmem?.roles.cache.has(config.roles.squadleader)) perms.level = 3
@@ -68,7 +71,7 @@ if(!permmem) return {
         level: 0,
         eval: false,
         bot: true,
-        bypass: false
+        bypass: false,
       }
     return perms
   },
@@ -76,7 +79,7 @@ if(!permmem) return {
     if (!input) return message.member
     let target = message.mentions.members.first()
     if (target == null) {
-      target = message.guild.members.fetch(input).catch(()=>{})
+      target = message.guild.members.fetch(input).catch(() => {})
     }
     if (target == null) {
       target = message.guild.members.cache.find((member) => member.user.tag === input || member.user.id === input || member.user.username === input || (member.nickname !== null && member.nickname === input))
@@ -160,10 +163,10 @@ if(!permmem) return {
     return client.emojis.cache.find((emoji) => emoji.name.toLowerCase() == name.toLowerCase().replace(/ /g, "_"))
   },
   xp: function (level, xp) {
-    let levelXP = Math.floor(5 / 6 * level * (2 * level * level + 27 * level + 91));
-    let remainingXP = levelXP - xp;
-    return {levelXP, remainingXP/*, currentLevel, nextLevel: currentLevel + 1*/}
-  }
+    let levelXP = Math.floor((5 / 6) * level * (2 * level * level + 27 * level + 91))
+    let remainingXP = levelXP - xp
+    return { levelXP, remainingXP /*, currentLevel, nextLevel: currentLevel + 1*/ }
+  },
 }
 const vars = {
   Discord: require(`discord.js`),
@@ -216,67 +219,67 @@ const vars = {
   },
 }
 //Database tables
-const dbs = {
-  resp: new vars.db.table("resp"),
-  ows: new vars.db.table("ows"),
-  temp: new vars.db.table("temp"),
-  levels: new vars.db.table("levels"),
-  master: new vars.db.table("master"),
-  facts: new vars.db.table("facts"),
-}
+let dbs = [];
+["resp", "ows", "temp", "levels", "master", "facts", "economy"].forEach((x) => (dbs[x] = new vars.db.table(x)))
+// const dbs = {
+//   resp: new vars.db.table("resp"),
+//   ows: new vars.db.table("ows"),
+//   temp: new vars.db.table("temp"),
+//   levels: new vars.db.table("levels"),
+//   master: new vars.db.table("master"),
+//   facts: new vars.db.table("facts"),
+// }
 
 const paginator = async (author, msg, embeds, pageNow, addReactions = true) => {
-  if(embeds.length === 1) return
+  if (embeds.length === 1) return
   if (addReactions) {
     await msg.react("⏪")
     await msg.react("◀")
     await msg.react("▶")
     await msg.react("⏩")
   }
-  let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀","▶","⏪","⏩"].includes(reaction.emoji.name), {time: 30*1000, max:1, errors: ['time']}).catch(() => {})
+  let reaction = await msg.awaitReactions((reaction, user) => user.id == author && ["◀", "▶", "⏪", "⏩"].includes(reaction.emoji.name), { time: 30 * 1000, max: 1, errors: ["time"] }).catch(() => {})
   if (!reaction) return msg.reactions.removeAll().catch(() => {})
   reaction = reaction.first()
   //console.log(msg.member.users.tag)
-  if (msg.channel.type == 'dm' || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
+  if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
     if (reaction.emoji.name == "◀") {
-      let m = await msg.channel.send(embeds[Math.max(pageNow-1, 0)])
+      let m = await msg.channel.send(embeds[Math.max(pageNow - 1, 0)])
       msg.delete()
-      paginator(author, m, embeds, Math.max(pageNow-1, 0))
+      paginator(author, m, embeds, Math.max(pageNow - 1, 0))
     } else if (reaction.emoji.name == "▶") {
-      let m = await msg.channel.send(embeds[Math.min(pageNow+1, embeds.length-1)])
+      let m = await msg.channel.send(embeds[Math.min(pageNow + 1, embeds.length - 1)])
       msg.delete()
-      paginator(author, m, embeds, Math.min(pageNow+1, embeds.length-1))
+      paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1))
     } else if (reaction.emoji.name == "⏪") {
       let m = await msg.channel.send(embeds[0])
       msg.delete()
       paginator(author, m, embeds, 0)
     } else if (reaction.emoji.name == "⏩") {
-      let m = await msg.channel.send(embeds[embeds.length-1])
+      let m = await msg.channel.send(embeds[embeds.length - 1])
       msg.delete()
-      paginator(author, m, embeds, embeds.length-1)
+      paginator(author, m, embeds, embeds.length - 1)
     }
-  }
-  else {
+  } else {
     if (reaction.emoji.name == "◀") {
       await reaction.users.remove(author)
-      let m = await msg.edit(embeds[Math.max(pageNow-1, 0)])
-      paginator(author, m, embeds, Math.max(pageNow-1, 0), false)
+      let m = await msg.edit(embeds[Math.max(pageNow - 1, 0)])
+      paginator(author, m, embeds, Math.max(pageNow - 1, 0), false)
     } else if (reaction.emoji.name == "▶") {
       await reaction.users.remove(author)
-      let m = await msg.edit(embeds[Math.min(pageNow+1, embeds.length-1)])
-      paginator(author, m, embeds, Math.min(pageNow+1, embeds.length-1), false)
+      let m = await msg.edit(embeds[Math.min(pageNow + 1, embeds.length - 1)])
+      paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1), false)
     } else if (reaction.emoji.name == "⏪") {
       await reaction.users.remove(author)
       let m = await msg.edit(embeds[0])
       paginator(author, m, embeds, 0, false)
     } else if (reaction.emoji.name == "⏩") {
       await reaction.users.remove(author)
-      let m = await msg.edit(embeds[embeds.length-1])
-      paginator(author, m, embeds, embeds.length-1, false)
+      let m = await msg.edit(embeds[embeds.length - 1])
+      paginator(author, m, embeds, embeds.length - 1, false)
     }
   }
 }
-
 
 dbs.list = Object.getOwnPropertyNames(dbs)
 vars.list = Object.getOwnPropertyNames(vars)
@@ -291,7 +294,8 @@ exports.data = {
   client: client,
   Discord: Discord,
   config: vars.config,
-  paginator
+  paginator,
+  unb,
 }
 
 exports.data.list = Object.getOwnPropertyNames(exports.data)
