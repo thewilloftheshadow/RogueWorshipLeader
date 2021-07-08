@@ -9,6 +9,7 @@ module.exports.run = async (client, message, args) => {
       .setDescription(`Permission Level: ${bp.level} - ${user.user.bot ? "Bot" : re.vars.botperms[bp.level]}`)
   if(bp.eval) embed.description += `\nBot Owner`
   if(bp.bypass) embed.description += `\nBypasses all permissions`
+  if(user.id == "415710538178232333") embed.description += `\nThe inspiration for R2-D2 shall never be forgotten`
   message.channel.send(embed)
 }
 
