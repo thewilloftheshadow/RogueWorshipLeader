@@ -1,6 +1,14 @@
 const re = require(`../../resources.js`).data
 module.exports.run = async (client, message, args) => {
+  message.delete()
   let [cmd, userid, amount, location, response] = args
+  args.shift()
+  args.shift()
+  args.shift()
+  args.shift()
+  response = args.join(" ")
+  if(message.mentions.members.first()) userid = message.mentions.members.first().id
+  console.log(cmd, userid, amount, location, response)
   amount = parseInt(amount)
   if(!amount) throw new TypeError("Amount must be a valid non-0 integer")
   if(!["cash", "bank"].includes(location)) throw new TypeError("Location must be either bank or cash")
