@@ -1,6 +1,6 @@
 const re = require(`../resources.js`).data
 
-re.client.on("message", (message) => {
+re.client.on("messageCreate", (message) => {
     if(!message.content) return;
   let ar = re.dbs.resp.get(message.content)
   if(ar) message.channel.send(ar.response)

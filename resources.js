@@ -1,6 +1,6 @@
 const config = require(`./config.js`)
 const Discord = require(`discord.js`)
-const client = new Discord.Client({ partials: ["MESSAGE", "CHANNEL", "USER"], fetchAllMembers: true })
+const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] })
 const unbClient = require("unb-api").Client
 const unb = new unbClient(process.env.UNB)
 const func = {
@@ -111,40 +111,40 @@ const func = {
     if (!reaction) return msg.reactions.removeAll().catch(() => {})
     reaction = reaction.first()
     //console.log(msg.member.users.tag)
-    if (msg.channel.type == "dm" || !msg.guild.me.hasPermission("MANAGE_MESSAGES")) {
+    if (msg.channel.type == "dm" || !msg.guild.me.permissions.has("MANAGE_MESSAGES")) {
       if (reaction.emoji.name == "◀") {
-        let m = await msg.channel.send(embeds[Math.max(pageNow - 1, 0)])
+        let m = await msg.channel.send({embeds: [embeds[Math.max(pageNow - 1, 0)]]})
         msg.delete()
         func.paginator(author, m, embeds, Math.max(pageNow - 1, 0))
       } else if (reaction.emoji.name == "▶") {
-        let m = await msg.channel.send(embeds[Math.min(pageNow + 1, embeds.length - 1)])
+        let m = await msg.channel.send({embeds: [embeds[Math.min(pageNow + 1, embeds.length - 1)]]})
         msg.delete()
         func.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1))
       } else if (reaction.emoji.name == "⏪") {
-        let m = await msg.channel.send(embeds[0])
+        let m = await msg.channel.send({embeds: [embeds[0]]})
         msg.delete()
         func.paginator(author, m, embeds, 0)
       } else if (reaction.emoji.name == "⏩") {
-        let m = await msg.channel.send(embeds[embeds.length - 1])
+        let m = await msg.channel.send({embeds: [embeds[embeds.length - 1]]})
         msg.delete()
         func.paginator(author, m, embeds, embeds.length - 1)
       }
     } else {
       if (reaction.emoji.name == "◀") {
         await reaction.users.remove(author)
-        let m = await msg.edit(embeds[Math.max(pageNow - 1, 0)])
+        let m = await msg.channel.send({embeds: [embeds[Math.max(pageNow - 1, 0)]]})
         func.paginator(author, m, embeds, Math.max(pageNow - 1, 0), false)
       } else if (reaction.emoji.name == "▶") {
         await reaction.users.remove(author)
-        let m = await msg.edit(embeds[Math.min(pageNow + 1, embeds.length - 1)])
+        let m = await msg.channel.send({embeds: [embeds[Math.min(pageNow + 1, embeds.length - 1)]]})
         func.paginator(author, m, embeds, Math.min(pageNow + 1, embeds.length - 1), false)
       } else if (reaction.emoji.name == "⏪") {
         await reaction.users.remove(author)
-        let m = await msg.edit(embeds[0])
+        let m = await msg.channel.send({embeds: [embeds[0]]})
         func.paginator(author, m, embeds, 0, false)
       } else if (reaction.emoji.name == "⏩") {
         await reaction.users.remove(author)
-        let m = await msg.edit(embeds[embeds.length - 1])
+        let m = await msg.channel.send({embeds: [embeds[embeds.length - 1]]})
         func.paginator(author, m, embeds, embeds.length - 1, false)
       }
     }
@@ -221,7 +221,7 @@ const vars = {
 }
 //Database tables
 let dbs = [];
-["resp", "ows", "temp", "levels", "master", "facts", "economy"].forEach((x) => (dbs[x] = new vars.db.table(x)))
+["resp", "ows", "temp", "levels", "master", "facts", "economy", "codes"].forEach((x) => (dbs[x] = new vars.db.table(x)))
 // const dbs = {
 //   resp: new vars.db.table("resp"),
 //   ows: new vars.db.table("ows"),

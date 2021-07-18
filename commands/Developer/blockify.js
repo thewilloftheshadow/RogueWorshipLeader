@@ -1,8 +1,7 @@
 const re = require(`../../resources.js`).data
 module.exports.run = async (client, message, args) => {
-  message.channel.send(args.join(" ").replace(/(\r\n|\n|\r)/gm,"\n"), {"code": "fix", "split": " "})
-};
-
+  message.channel.send({ content: args.join(" ").replace(/(\r\n|\n|\r)/gm, "\n"), code: "fix", split: " " })
+}
 
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
@@ -10,5 +9,5 @@ module.exports.help = {
   syntax: `${re.config.prefix}${__filename.split(`${__dirname}/`).pop().split(`.`).shift()} <message<`,
   alias: [],
   module: `${__dirname.split(`/`).pop()}`,
-  access: {eval: true}
+  access: { eval: true },
 }

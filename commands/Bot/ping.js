@@ -18,15 +18,10 @@ module.exports.run = async (client, message, args) => {
         name:`**Api Latency:**`,
         value:`\`${Math.round(client.ws.ping)}ms\``,
         inline:true
-      },
-      {
-        name:`**Memory Usage:**`,
-        value:`\`${re.func.getMemoryUsage()}mb\``,
-        inline:true
       }
     ]
   }
-  m.edit(``, { embed })
+  m.edit({content: null, embeds: [embed]})
 };
 
 module.exports.help = {

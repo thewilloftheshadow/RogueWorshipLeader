@@ -1,5 +1,5 @@
 const re = require(`../resources.js`).data
-re.client.on("message", async (message) => {
+re.client.on("messageCreate", async (message) => {
   //if (message.guild && message.guild.id != re.config.server) return
   let prefix = re.config.prefix
   if (!message.content.toLowerCase().startsWith(prefix.toLowerCase()) && message.guild) return
@@ -34,7 +34,7 @@ re.client.on("message", async (message) => {
       .addField("Error Description", `\`\`\`${err.stack.replace(/(?:(?!\n.*?\(\/home\/sd\/rwl.*?)\n.*?\(\/.*?\))+/g, "\n\t...")}\`\`\``)
       .setColor("RED")
     await message.channel.send(`An error occurred when trying to execute this command. The developer has been notified.`)
-    re.client.channels.cache.get(re.config.errors).send("<@" + re.config.ownerID + ">", embed)
+    re.client.channels.cache.get(re.config.errors).send({content: "<@" + re.config.ownerID + ">", embeds: [embed]})
     console.error(err)
   }
 })

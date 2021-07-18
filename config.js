@@ -4,7 +4,7 @@ module.exports = {
   "ownerID": "439223656200273932",
   "color": "#A43726",
   "logs": "791046776982863884",
-  "errors": "791046776982863884",
+  "errors": "864380397948502026",
   "debug": {
     "client": false,
     "handlers": false

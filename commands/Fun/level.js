@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
   .addField("XP", `${data.xp}/${calc.levelXP}`, true)
   .setFooter(`${calc.remainingXP} XP remaining`)
   .setTimestamp()
-  message.channel.send(embed)
+  message.channel.send({embeds: [embed]})
 }
 
 module.exports.help = {

@@ -1,5 +1,5 @@
 const re = require(`../resources.js`).data
-re.client.on("message", async (message) => {
+re.client.on("messageCreate", async (message) => {
   if (!message.guild || message.author.bot) return
   let data = re.dbs.levels.get(`${message.guild.id}.${message.author.id}`)
   if(!data) {
@@ -19,7 +19,7 @@ re.client.on("message", async (message) => {
     let embed = new re.Discord.MessageEmbed().setDescription(`${message.content}\n\n[Jump to message](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`).setColor(0x58AE47).setAuthor(message.author.tag, message.author.avatarURL())
     let lu = message.guild.channels.cache.find(x => ["level-up", "leveling", "level"].includes(x.name))
     lu ? lu.send(msg).catch(() => message.channel.send(msg)) : message.channel.send(msg)
-    lu ? lu.send(embed).catch(() => {}) : null
+    lu ? lu.send({embeds: [embed]}).catch(() => {}) : null
   }
   re.dbs.levels.set(`${message.guild.id}.${message.author.id}`, data)
   re.client.xpcd.set(`${message.guild.id}-${message.author.id}`, Date.now())
