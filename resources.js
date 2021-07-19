@@ -25,6 +25,7 @@ const func = {
     else return text
   },
   getRandom: function (min, max) {
+    max = max + 1
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min)) + min

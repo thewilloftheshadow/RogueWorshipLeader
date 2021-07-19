@@ -31,7 +31,7 @@ re.client.on("messageCreate", async (message) => {
   } catch (err) {
     let embed = new re.Discord.MessageEmbed()
       .setDescription(`An error occured when ${message.author} (${message.author.id}) attempted the following command: \`${message.content.replace(/(`)/g, "$1")}\``)
-      .addField("Error Description", `\`\`\`${err.stack.replace(/(?:(?!\n.*?\(\/home\/sd\/rwl.*?)\n.*?\(\/.*?\))+/g, "\n\t...")}\`\`\``)
+      .addField("Error Description", `\`\`\`${err.stack}\`\`\``)
       .setColor("RED")
     await message.channel.send(`An error occurred when trying to execute this command. The developer has been notified.`)
     re.client.channels.cache.get(re.config.errors).send({content: "<@" + re.config.ownerID + ">", embeds: [embed]})
