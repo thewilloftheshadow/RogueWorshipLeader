@@ -9,6 +9,7 @@ module.exports.run = async (client, message, args) => {
       let old = re.dbs.economy.get(`${message.guild.id}.${user}.duelBoost`)
       console.log(old)
       if(old) message.channel.send(`You have replaced your ${old.id} with ${old.durability} durability!`)
+      console.log(data)
       re.dbs.economy.set(`${message.guild.id}.${user}.duelBoost`, data)
       message.channel.send(`Your ${item} with ${data.durability} durability has been successfully equipped for your next battle!`)
       message.delete()

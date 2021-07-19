@@ -50,6 +50,12 @@ re.client.on("interactionCreate", async (interaction) => {
         interaction.reply({ content: `Your code has been created:\n\`\`\`${code}\`\`\``, ephemeral: true })
     }
 
+    if (interaction.commandName === "equipped") {
+        let item = re.dbs.economy.get(`${interaction.guild.id}.${interaction.user.id}.duelBoost`)
+        if(!item) return interaction.reply(`You don't have any weapons equipped right now!`)
+        interaction.reply({ content: `You currently have a ${item.id} with ${item.durability} durability equipped` })
+    }
+
     if (interaction.commandName == "duelofthefates") {
         let p1 = { user: interaction.member, health: maxHealth }
         let p2 = { user: interaction.options.get("user").member, health: maxHealth }
@@ -86,6 +92,8 @@ re.client.on("interactionCreate", async (interaction) => {
         }
         embed = generateEmbed(p1, p2, `\n🏆 **${winner.user.nickname}** has won the duel!`, embed)
         interaction.editReply({ embeds: [embed] })
+        checkDurability(p1.user.id, interaction.guild.id)
+        checkDurability(p2.user.id, interaction.guild.id)
     }
 })
 
@@ -117,4 +125,15 @@ const doBattle = (attacker, attacked) => {
     if (attacked.health < 0) attacked.health = 0
     data.message = `**${attacker.user.nickname}** attacked **${attacked.user.nickname}**, dealing ${data.baseDamage} damage${attacker.boost ? `, and ${data.bonusDamage} bonus damage from their **${re.vars.tscwd(attacker.boost.id).replace(".", "")}**` : ""}!`
     return data
+}
+
+const checkDurability = (userid, guildid) => {
+    let item = re.dbs.economy.get(`${guildid}.${userid}.duelBoost`)
+    item.durability = item.durability - 1
+    if(item.durability <= 0) {
+        re.dbs.economy.delete(`${guildid}.${userid}.duelBoost`)
+        re.client.users.cache.get(userid).send(`Your ${item.id} has broken!`)
+    } else {
+        re.dbs.economy.set(`${guildid}.${userid}.duelBoost`, item)
+    }
 }

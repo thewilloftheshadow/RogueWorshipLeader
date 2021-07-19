@@ -50,18 +50,22 @@ module.exports.run = async (client, message, args) => {
         },
       ],
     },
-    // {
-    //   name: "duelofthefates",
-    //   description: "Duel another user in the server!",
-    //   options: [
-    //     {
-    //       name: "user",
-    //       type: "USER",
-    //       description: "Who you want to duel",
-    //       required: true,
-    //     },
-    //   ],
-    // },
+    {
+      name: "duelofthefates",
+      description: "Duel another user in the server!",
+      options: [
+        {
+          name: "user",
+          type: "USER",
+          description: "Who you want to duel",
+          required: true,
+        },
+      ],
+    },
+    {
+      name: "equipped",
+      description: "See your equipped item for duels!",
+    },
   ]
   console.log(data)
   data.forEach((x) => message.guild.commands.create(x))
