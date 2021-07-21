@@ -60,6 +60,11 @@ module.exports.run = async (client, message, args) => {
           description: "Who you want to duel",
           required: true,
         },
+        {
+          name: "amount",
+          type: "INTEGER",
+          description: "The amount you want to bet",
+        },
       ],
     },
     {
