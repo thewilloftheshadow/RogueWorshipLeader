@@ -69,7 +69,6 @@ re.client.on("interactionCreate", async (interaction) => {
             .setCustomId(`${attackee.id}=duel:accept=${interaction.user.id};${attackee.id}${amount ? `;${amount}` : ""}`)
         let decline = new re.Discord.MessageButton().setLabel("Decline").setStyle("DANGER").setCustomId(`${attackee.id}=duel:decline`)
         let row = new re.Discord.MessageActionRow().addComponents(accept, decline)
-        interaction.channel.send({ content: `${attackee}, ${interaction.member} has challenged you to a Duel of the Fates${amount ? ` for ${amount} credits` : ""}. Do you accept?`, components: [row] })
-        interaction.reply({ content: "Challenge has been sent!", ephemeral: true })
+        interaction.reply({ content: `${attackee}, ${interaction.member} has challenged you to a Duel of the Fates${amount ? ` for ${amount} credits` : ""}. Do you accept?`, components: [row] })
     }
 })
