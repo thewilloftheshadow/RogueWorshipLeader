@@ -57,6 +57,12 @@ re.client.on("interactionCreate", async (interaction) => {
     if (interaction.commandName == "duelofthefates") {
         let attackee = interaction.options.get("user").member
         let amount = interaction.options.get("amount")?.value
+        let unbData1 = await re.unb.getUserBalance(interaction.guild.id, interaction.user.id) 
+        let unbData2 = await re.unb.getUserBalance(interaction.guild.id, attackee.id) 
+        if(unbData1.cash < amount) return interaction.reply({content: `You don't have enough cash to place a bet of ${amount} on this duel!`})
+        if(unbData2.cash < amount) return interaction.reply({content: `The person you have challenged doesn't have enough cash to place a bet of ${amount} on this duel!`})
+
+
         let accept = new re.Discord.MessageButton()
             .setLabel("Accept")
             .setStyle("SUCCESS")

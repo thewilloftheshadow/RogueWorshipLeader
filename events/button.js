@@ -25,7 +25,7 @@ re.client.on("interactionCreate", async (interaction) => {
         p2.boost = re.dbs.economy.get(`${interaction.guild.id}.${p2.user.id}.duelBoost`) ?? null
 
         let embed = generateEmbed(p1, p2, "*Match starting in 3...*")
-        await interaction.update({ content: "", embeds: [embed], components: []})
+        await interaction.update({ content: null, embeds: [embed], components: []})
 
         await re.func.sleep(3000)
 
