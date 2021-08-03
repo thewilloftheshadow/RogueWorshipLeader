@@ -1,6 +1,7 @@
 const config = require(`./config.js`)
 const Discord = require(`discord.js`)
-const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS", "GUILD_PRESENCES"] })
+
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS_AND_STICKERS", "GUILD_INTEGRATIONS", "GUILD_WEBHOOKS", "GUILD_INVITES", "GUILD_VOICE_STATES", "GUILD_PRESENCES", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_MESSAGE_TYPING", "DIRECT_MESSAGES", "DIRECT_MESSAGE_REACTIONS", "DIRECT_MESSAGE_TYPING"] })
 const unbClient = require("unb-api").Client
 const unb = new unbClient(process.env.UNB)
 const func = {
@@ -180,6 +181,7 @@ const vars = {
   pull: require("array-pull"),
   randomColor: require("random-color"),
   tscwd: require("to-sentence-case-with-dot").default,
+  shuffle: require("array-shuffle"),
   botperms: {
     0: "Unknown User / Bot",
     1: "Squadron Member",

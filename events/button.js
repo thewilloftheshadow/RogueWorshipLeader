@@ -9,6 +9,11 @@ re.client.on("interactionCreate", async (interaction) => {
     if (interaction.user.id != lockTo) return interaction.deferUpdate()
     let args = argString?.split(";")
 
+    if (command == "scratch") {
+        let [prize, index] = args
+        
+    }
+
     if (command == "duel:decline") {
         interaction.update({
             content: `~~${interaction.message.content}~~\n\nThe duel was declined!`,

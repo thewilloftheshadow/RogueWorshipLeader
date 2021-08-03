@@ -9,7 +9,8 @@ module.exports.run = async (client, message, args) => {
     array.push({"text": fact, "id": id})
     re.dbs.facts.set(cmd, array)
     let embed = new re.Discord.MessageEmbed().setTitle(`New Fact has been added to the \`${re.config.prefix}${cmd}\` command`).setDescription(`\`\`\`${fact}\`\`\``).setFooter(`ID: ${id}`)
-F  };
+    message.channel.send({embeds: embed})
+};
 
 module.exports.help = {
   name: `${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`,
