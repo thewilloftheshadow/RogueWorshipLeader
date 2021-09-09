@@ -11,7 +11,10 @@ module.exports.run = async (client, message, args) => {
   console.log(cmd, userid, amount, location, response)
   amount = parseInt(amount)
   if(!amount) {
-    throw new TypeError("Amount must be a valid non-0 integer")
+      let param = {reason: `Trigger command from ${message.author.tag}: \`${message.content}\``}
+      param[location] = amount
+      console.log(param)
+    //throw new TypeError("Amount must be a valid non-0 integer")
   }
   else{
   if(!["cash", "bank"].includes(location)) throw new TypeError("Location must be either bank or cash")
