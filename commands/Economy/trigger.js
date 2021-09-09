@@ -10,7 +10,10 @@ module.exports.run = async (client, message, args) => {
   if(message.mentions.members.first()) userid = message.mentions.members.first().id
   console.log(cmd, userid, amount, location, response)
   amount = parseInt(amount)
-  if(!amount) throw new TypeError("Amount must be a valid non-0 integer")
+  if(!amount) {
+    throw new TypeError("Amount must be a valid non-0 integer")
+  }
+  else{
   if(!["cash", "bank"].includes(location)) throw new TypeError("Location must be either bank or cash")
 
   let param = {reason: `Trigger command from ${message.author.tag}: \`${message.content}\``}
@@ -30,6 +33,7 @@ module.exports.run = async (client, message, args) => {
     default:
       message.channel.send("Unable to process trigger")
       break;
+    }
   }
   message.channel.send(response)
 }
