@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
       if (modulecommands.length > 0) await embed.addField(`**${re.func.capitalizeFirstLetter(module)}:**`, modulecommands, true)
     })
     //embed.addField("Note:", `${showall ? `If a command is crossed out, you do not have access to use it` : `Use \`${re.config.prefix}help all\` to see all commands, even those you don't have access to`}\nUse the command \`${re.config.prefix}help <command>\` to get more info on a specific command!`)
-    message.channel.send(embed)
+    message.channel.send({embeds: [embed]})
   } else {
     let props = client.commands.get(command)
     if (!props || props.help.name == "secretphrasetousefordmmessages") return message.channel.send("Sorry, I couldn't find that command")

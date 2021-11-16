@@ -1,6 +1,6 @@
 const re = require(`../../resources.js`).data
 module.exports.run = async (client, message, args) => {
-  if (!message.guild.id == config.server) return message.channel.send("This command is only for the RogueWorshipLeader server!")
+  if (!message.guild.id == re.config.server) return message.channel.send("This command is only for the RogueWorshipLeader server!")
   let channel = re.config.ows[0] // TODO: support multiple ows
   let story = re.vars.tscwd(re.dbs.ows.get(`${channel}.words`).join(" "))
   story.replace("```css", "")
