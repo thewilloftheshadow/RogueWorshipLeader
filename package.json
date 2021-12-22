@@ -7,6 +7,7 @@
     "start": "node bot.js"
   },
   "dependencies": {
+    "amaribot.js": "^1.4.1",
     "array-pull": "^0.2.1",
     "array-shuffle": "^2.0.0",
     "discord-starboards": "^2.3.1",

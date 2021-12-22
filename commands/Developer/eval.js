@@ -23,3 +23,8 @@ module.exports.help = {
   module: `${__dirname.split(`/`).pop()}`,
   access: {eval: true}
 }
+
+
+const dropCash = () => {
+  return "Heh, you tried"
+}

@@ -16,3 +16,7 @@ re.client.starboardsManager.on("starboardNoSelfStar", (emoji, message, user) => 
 re.client.starboardsManager.on("starboardNoEmptyMsg", (emoji, message, user) => {
   message.channel.send(`You cannot ${re.client.emojis.cache.get(emoji)} an empty message.`)
 })
+
+re.client.starboardsManager.on("starboardReactionAdd", (emoji, message, user) => {
+  console.log(`${user.username} reacted to a message with ${emoji} (message id: ${message.id}).`);
+});
