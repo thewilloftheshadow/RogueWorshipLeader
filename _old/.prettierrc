@@ -1,6 +1,6 @@
 {
-  "tabWidth": 2,
+  "tabWidth": 4,
   "semi": false,
   "proseWrap": "never",
-  "printWidth": 600
+  "printWidth": 9999999
 }
