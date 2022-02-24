@@ -46,6 +46,19 @@ fs.readdir("./buttons/", (err, files) => {
   })
 })
 
+client.modals = new Discord.Collection()
+fs.readdir("./modals/", (err, files) => {
+  let jsfile = files.filter((f) => f.endsWith(".js"))
+  jsfile.forEach((f, i) => {
+    let run = require(`./modals/${f}`)
+    try {
+      client.modals.set(f.replace(".js", ""), run)
+    } catch (err) {
+      if (err) console.error(err)
+    }
+  })
+})
+
 const eventFiles = fs.readdirSync("./events").filter((file) => file.endsWith(".js"))
 for (const file of eventFiles) {
   require(`./events/${file}`)(client)

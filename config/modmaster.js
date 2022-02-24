@@ -1,6 +1,6 @@
 const sel = [
-  { name: "Permissions", value: "perms" },
   { name: "Ping Gif", value: "ping-gif" },
+  { name: "Permissions", value: "perms" },
 ]
 
 const permissions = [

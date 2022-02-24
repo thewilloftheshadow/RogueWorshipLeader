@@ -72,7 +72,7 @@ module.exports = {
 
     await interaction.dbUser.save()
 
-    let toSend = { embeds: [embed], ephemeral: true }
+    let toSend = { embeds: [embed], ephemeral: false }
 
     if (row.components.length > 0) toSend.components = [row]
 
