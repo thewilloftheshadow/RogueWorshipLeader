@@ -14,8 +14,7 @@ module.exports = {
   },
   permissions: [],
   run: async (interaction, client) => {
-    if (!interaction.member.roles.cache.has("791044221803954188") && !interaction.member.roles.cache.has("812746192081256461"))
-      return interaction.reply("You do not have permission to use this command.")
+    if(!interaction.dbUser.perms.pinggif) return interaction.reply("You don't have permission to do that. Ask a mod to use /modmaster if you think you should.")
     if (interaction.options.get("pinggif")?.value) interaction.dbUser.pingGif = interaction.options.get("pinggif")?.value
 
     await interaction.dbUser.save()
