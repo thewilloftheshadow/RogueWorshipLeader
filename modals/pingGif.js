@@ -1,4 +1,5 @@
 const { users } = require("../db")
+const {formatConfig} = require("../fn")
 module.exports = async (interaction, client, args) => {
   let userDb = await users.findOne({ user: args[0] }).exec()
 
@@ -7,8 +8,10 @@ module.exports = async (interaction, client, args) => {
   userDb.save()
 
   let m = interaction.message
+  
+  m.embeds[0].fields.pop()
 
-  m.embeds[0].fields[m.embeds[0].fields.length - 1] = { name: "Update Complete", value: "Open another ModMaster panel to see your changes." }
+  m.embeds[0].fields[m.embeds[0].fields.length - 1] = formatConfig(userDb)
 
   m.edit({ embeds: [m.embeds[0]], components: [] })
 }

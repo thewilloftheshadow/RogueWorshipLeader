@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 const { users } = require("../../db")
 const { modmaster } = require("../../config")
+const { formatConfig } = require("../../fn")
 
 const { sel, permissions } = modmaster
 
@@ -45,26 +46,27 @@ module.exports = {
     let userDb = await users.findOne({ user: user.id }).exec()
     if (!userDb) userDb = await new users({ user: user.id }).save()
 
-    let dataString = "```ini\n"
-
-    dataString += `[Ping GIF]\n${userDb.pingGif ?? "No GIF set"}\n\n`
-
-    dataString += `[Permissions]\n${"None set"}\n\n`
-
-    dataString += "```"
-
-    embed.addField(`Current User Data`, dataString)
+    embed.addField(`Current User Data`, formatConfig(userDb))
 
     let row = new MessageActionRow()
 
     switch (selector) {
-      case "ping-gif":
-        embed.addField("Instructions", "Do nothing, more coming soon")
+      case "pinggif":
+        embed.addField("Instructions", "Press the button below to set the user's ping gif.")
         row.addComponents(new MessageButton().setCustomId(`openModal-pingGif,${user.id}`).setLabel("Edit Ping GIf").setStyle("DANGER"))
         break
 
       case "perms":
         embed.addField("Instructions", "Use the buttons below to control the permissions of the controlled user. Press save when you are done.")
+        permissions.forEach((p) => {
+          let button = new MessageButton()
+            .setCustomId(`permToggle-${p.value},${interaction.user.id}`)
+            .setLabel(`${p.name}`)
+            .setStyle(userDb.perms[p.value] ? "SUCCESS" : "DANGER")
+          row.addComponents(button)
+        })
+        row.addComponents(new MessageButton().setLabel("Save").setStyle("SECONDARY").setCustomId(`disableAll-${interaction.user.id}`))
+        
 
       default:
         break
