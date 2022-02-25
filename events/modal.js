@@ -13,7 +13,7 @@ module.exports = (client) => {
     
         let modalFile = client.modals.get(cmd)
 
-        if(!modalFile) return interaction.reply("Error")
+        if(!modalFile) return interaction.reply("Modal data corrupted")
 
         await modalFile(interaction, client, args)
 
