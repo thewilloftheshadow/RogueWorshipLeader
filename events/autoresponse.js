@@ -13,7 +13,7 @@ module.exports = (client) => {
 
 const respond = async (key, channel) => {
   if (process.env.DEBUG) console.log(`autoresponse: ${key}`)
-  let responseDb = await autoresponse.findOne({ trigger: key, deleted: false })
+  let responseDb = await autoresponse.findOne({ trigger: key, guild: channel.guild.id, deleted: false })
 
   let response = responseDb?.response
 

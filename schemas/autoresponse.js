@@ -8,7 +8,8 @@ const schema = new mongoose.Schema({
   editedAt: { type: Date, default: Date.now }, // time response was edited
   editedBy: { type: String }, // mod who last edited autoresponse
   deleted: { type: Boolean, default: false }, // if autoresponse is deleted
-  deletedBy: { type: String } // mod who deleted autoresponse
+  deletedBy: { type: String }, // mod who deleted autoresponse
+  guild: { type: String } // guild id
 })
 
 module.exports = mongoose.model(`${__filename.split(`${__dirname}/`).pop().split(`.`).shift()}`, schema)

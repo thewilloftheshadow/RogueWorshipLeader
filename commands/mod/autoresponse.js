@@ -39,7 +39,7 @@ module.exports = {
 
     let preT = interaction.options.get("trigger")?.value
     let preR = interaction.options.get("response")?.value
-    let preResponseDb = await autoresponse.findOne({ trigger: preT, deleted: false })
+    let preResponseDb = await autoresponse.findOne({ trigger: preT, guild: interaction.guild.id, deleted: false })
 
     const modalId = `autoresponse-${interaction.options.get("add_or_remove").value},${interaction.id}`
 
@@ -92,7 +92,7 @@ module.exports = {
       responseDb = await autoresponse.findOne({ trigger: preT })
 
       if (!responseDb) {
-        responseDb = new autoresponse({ trigger, response, createdBy: interaction.user.id })
+        responseDb = new autoresponse({ trigger, response, server: interaction.guild.id, createdBy: interaction.user.id })
       } else {
         responseDb.response = response
         responseDb.editedBy = interaction.user.id
@@ -107,7 +107,7 @@ module.exports = {
       modalReturned.editReply(strSend)
     } else {
       if (!preT) return interaction.reply("You must specify a trigger to remove.")
-      await autoresponse.updateOne({ trigger: preT }, { deleted: true, deletedBy: interaction.user.id })
+      await autoresponse.updateOne({ trigger: preT, guild: interaction.guild.id }, { deleted: true, deletedBy: interaction.user.id })
       interaction.reply(`Autoresponse ${preT} has been removed.`)
     }
   },
