@@ -1,6 +1,7 @@
-const { MessageActionRow, Modal, TextInputComponent } = require("discord.js")
+const { MessageActionRow, Modal, TextInputComponent, MessageEmbed } = require("discord.js")
 const { autoresponse } = require("../../db")
 const { modmaster } = require("../../config")
+const ms = require("ms")
 
 module.exports = {
   command: {
@@ -31,11 +32,13 @@ module.exports = {
     if (!interaction.member.roles.cache.has("791044221803954188")) return interaction.reply("You do not have permission to use this command.")
 
     let preT = interaction.options.get("trigger")?.value
-    let responseDb = await autoresponse.findOne({ trigger: preT })
+    let preResponseDb = await autoresponse.findOne({ trigger: preT, deleted: false })
 
-    let modal = new Modal().setTitle("Autoresponse Editor").setCustomId(`autoresponse-${interaction.options.get("add_or_remove").value}`)
+    const modalId = `autoresponse-${interaction.options.get("add_or_remove").value},${interaction.id}`
 
-    let trigger = new MessageActionRow().addComponents(
+    let modal = new Modal().setTitle("Autoresponse Editor").setCustomId(modalId)
+
+    let triggerRow = new MessageActionRow().addComponents(
       new TextInputComponent()
         .setLabel("Trigger")
         .setPlaceholder("Trigger for the autoresponse")
@@ -44,18 +47,57 @@ module.exports = {
         .setStyle("SHORT")
     )
 
-    if (preT) trigger.components[0].setValue(preT)
+    if (preT) triggerRow.components[0].setValue(preT)
 
-    modal.addComponents(trigger)
+    modal.addComponents(triggerRow)
+
+    let trigger, response
 
     if (interaction.options.get("add_or_remove").value == "add") {
-      let response = new MessageActionRow().addComponents(
-        new TextInputComponent().setRequired(true).setLabel("Response").setPlaceholder("Response to be sent").setCustomId("response").setStyle("PARAGRAPH")
+      let responseRow = new MessageActionRow().addComponents(
+        new TextInputComponent()
+          .setRequired(true)
+          .setLabel("Response")
+          .setPlaceholder("Response to be sent")
+          .setCustomId("response")
+          .setStyle("PARAGRAPH")
       )
-      if (responseDb) response.components[0].setValue(responseDb.response)
-      modal.addComponents(response)
-    }
+      if (preResponseDb) responseRow.components[0].setValue(preResponseDb.response)
+      modal.addComponents(responseRow)
 
-    interaction.showModal(modal)
+      await interaction.showModal(modal)
+
+      const filter = (interaction) => interaction.customId === modalId
+
+      const modalReturned = await interaction.awaitModalSubmit({ filter, time: ms("2m") })
+
+      if (!modalReturned) return
+
+      await modalReturned.deferReply()
+
+      trigger = modalReturned.fields.getTextInputValue("trigger")
+      response = modalReturned.fields.getTextInputValue("response")
+
+      responseDb = await autoresponse.findOne({ trigger: preT })
+
+      if (!responseDb) {
+        responseDb = new autoresponse({ trigger, response, createdBy: interaction.user.id })
+      } else {
+        responseDb.response = response
+        responseDb.editedBy = interaction.user.id
+        responseDb.editedAt = Date.now()
+      }
+
+      responseDb.save()
+      let strSend = `Autoresponse \`${trigger}\` has been ${
+        interaction.options.get("add_or_remove").value == "add" ? "added" : "removed"
+      }.\n\`\`\`${response}\`\`\``
+
+      modalReturned.editReply(strSend)
+    } else {
+      if (!preT) return interaction.reply("You must specify a trigger to remove.")
+      await autoresponse.updateOne({ trigger: preT }, { deleted: true, deletedBy: interaction.user.id })
+      interaction.reply(`Autoresponse ${preT} has been removed.`)
+    }
   },
 }
