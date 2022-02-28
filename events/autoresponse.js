@@ -4,6 +4,7 @@ module.exports = (client) => {
   client.on("messageCreate", (message) => {
     if(message.author?.bot) return
     if(!message.guild?.id) return
+    message.content = message.content.toLowerCase()
     let triggers = message.content.split(" ")
 
     triggers.forEach((x) => respond(x, message.channel))
