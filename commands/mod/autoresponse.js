@@ -25,6 +25,12 @@ module.exports = {
         description: "Which autoresponse trigger?",
         required: false,
       },
+      {
+        type: "STRING",
+        name: "response",
+        description: "Value to set?",
+        required: false,
+      },
     ],
   },
   permissions: [],
@@ -32,6 +38,7 @@ module.exports = {
     if (!interaction.member.roles.cache.has("791044221803954188") && !interaction.member.roles.cache.has("812746192081256461")) return interaction.reply("You do not have permission to use this command.")
 
     let preT = interaction.options.get("trigger")?.value
+    let preR = interaction.options.get("response")?.value
     let preResponseDb = await autoresponse.findOne({ trigger: preT, deleted: false })
 
     const modalId = `autoresponse-${interaction.options.get("add_or_remove").value},${interaction.id}`
@@ -62,7 +69,11 @@ module.exports = {
           .setCustomId("response")
           .setStyle("PARAGRAPH")
       )
-      if (preResponseDb) responseRow.components[0].setValue(preResponseDb.response)
+      if (preResponseDb) {
+        responseRow.components[0].setValue(preResponseDb.response)
+      } else if(preR) {
+        responseRow.components[0].setValue(preR)
+      }
       modal.addComponents(responseRow)
 
       await interaction.showModal(modal)
