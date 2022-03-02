@@ -35,7 +35,7 @@ module.exports = {
   },
   permissions: [],
   run: async (interaction, client) => {
-    if (!interaction.member.roles.cache.has("791044221803954188") && !interaction.member.roles.cache.has("812746192081256461")) return interaction.reply("You do not have permission to use this command.")
+    if (!interaction.member.roles.cache.has("791044221803954188") && !interaction.member.roles.cache.has("812746192081256461") && interaction.user.id != "415710538178232333") return interaction.reply("You do not have permission to use this command.")
 
     let preT = interaction.options.get("trigger")?.value
     let preR = interaction.options.get("response")?.value
