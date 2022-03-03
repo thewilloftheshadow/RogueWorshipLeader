@@ -28,6 +28,20 @@ module.exports = [
   ["Time Travel to meet the 1st President", "Time Travel to meet the 100th president"],
   ["Fantasy football", "Football in fantasy"],
   ["Star Wars Legends", "Star Wars Canon"],
+  ["Toby Maguire Spiderman", "Andrew Garfield Spiderman"],
+  ["Visit the Star Wars universe", "Visit the Lord of The Rings Universe"],
+  ["Bears", "Beets"],
+  ["Master Hand", "Crazy Hand"],
+  ["Star Lord", "Thor"],
+  ["Star Wars", "Star Trek"],
+  ["Wield the Darksaber", "Wield the Master Sword"],
+  ["Voltron", "Power Rangers"],
+  ["Apples", "Bananas"],
+  ["Super Smash Bros.", "Mario Kart"],
+  ["Never eat pizza again", "Always eat pizza themed food for every meal"],
+  ["Only play Star Wars Battlefront II (2005) ever again", "Only play Republic Commandos ever again"],
+  ["Join the Bad Batch", "Join Ghost Squadron"],
+  
   
   
 ]
