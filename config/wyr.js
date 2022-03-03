@@ -32,7 +32,7 @@ module.exports = [
   ["Visit the Star Wars universe", "Visit the Lord of The Rings Universe"],
   ["Bears", "Beets"],
   ["Master Hand", "Crazy Hand"],
-  ["Star Lord", "Thor"],
+  ["Be Star Lord", "Be Thor"],
   ["Star Wars", "Star Trek"],
   ["Wield the Darksaber", "Wield the Master Sword"],
   ["Voltron", "Power Rangers"],
