@@ -30,6 +30,18 @@ module.exports = (client) => {
             }
         }
 
+        if (ids.commanders.includes(message.author.id)) {
+            if (cmd == "togglecommander") {
+                if(message.member.roles.cache.has(ids.commander)) {
+                    message.member.roles.remove(ids.roles.commander)
+                    message.channel.send("<:Salute:804209943824564234>")
+                } else {
+                    message.member.roles.add(ids.roles.commander)
+                    message.channel.send("<:Salute:804209943824564234>")
+                }
+            }
+        }
+
         if (ids.devs.includes(message.author.id)) {
             if (cmd == "updateslash") {
                 const type = args[0] ?? "default"
