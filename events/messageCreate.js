@@ -32,7 +32,7 @@ module.exports = (client) => {
 
         if (ids.commanders.includes(message.author.id)) {
             if (cmd == "togglecommander") {
-                if(message.member.roles.cache.has(ids.commander)) {
+                if(message.member.roles.cache.has(ids.roles.commander)) {
                     message.member.roles.remove(ids.roles.commander)
                     message.channel.send("<:Salute:804209943824564234>")
                 } else {
