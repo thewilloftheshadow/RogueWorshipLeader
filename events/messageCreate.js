@@ -7,15 +7,15 @@ const { Util } = require("discord.js")
 const { ids } = require("../config")
 const { sleep } = require("../config/fn")
 
-const prefix = "^^"
+const prefix = "^"
 
 module.exports = (client) => {
     client.on("messageCreate", async (message) => {
         if (!message.content.startsWith(prefix)) return
         const args = message.content.slice(prefix.length).split(/ +/)
         console.log(args)
-        let cmd = args.shift().toLowerCase()
-        if (cmd == "") cmd = args.shift().toLowerCase()
+        let cmd = args.shift()
+        if (cmd == "") cmd = args.shift()
 
         console.log(message.content)
         console.log(`command: `, cmd)
