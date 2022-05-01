@@ -10,6 +10,7 @@ const schema = new mongoose.Schema({
     pinggif: { type: Boolean, default: false }, // can set their own ping gif
     facts: { type: Boolean, default: false }, // can add facts
     echo: { type: Boolean, default: false }, // can use the echo command
+    autoresponse: { type: Boolean, default: false }, // can manage autoresponse
   }
 })
 

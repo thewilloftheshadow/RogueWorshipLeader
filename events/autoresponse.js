@@ -2,10 +2,10 @@ const { autoresponse } = require("../db")
 
 module.exports = (client) => {
   client.on("messageCreate", (message) => {
-    if(message.author?.bot) return
-    if(!message.guild?.id) return
-    message.content = message.content.toLowerCase()
-    let triggers = message.content.split(" ")
+    if (message.author?.bot) return
+    if (!message.guild?.id) return
+    let check = message.content.toLowerCase()
+    let triggers = check.split(" ")
 
     triggers.forEach((x) => respond(x, message.channel))
   })
