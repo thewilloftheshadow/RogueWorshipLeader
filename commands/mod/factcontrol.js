@@ -42,8 +42,9 @@ module.exports = {
         .setRequired(true)
         .setCustomId("category")
         .setStyle("SHORT")
-        .setValue(preC)
     )
+
+    if(preC) categoryRow.components[0].setValue(preC)
 
     modal.addComponents(categoryRow)
 
