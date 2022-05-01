@@ -20,7 +20,8 @@ module.exports = {
   permissions: [],
   run: async (interaction, client) => {
     await interaction.deferReply()
-    let factList = await facts.find({ guild: interaction.guild.id, deleted: false })
+    let category = interaction.options.get("category").value
+    let factList = await facts.find({ guild: interaction.guild.id, deleted: false, category: category })
 
     await shuffle(factList)
     let factData = factList[0]
