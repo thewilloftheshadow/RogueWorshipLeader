@@ -11,7 +11,7 @@ module.exports = (client) => {
       let categories = []
       let allFacts = await facts.find({ guild: interaction.guild.id, deleted: false })
       allFacts.forEach((x) => {
-        if (!categories.includes(x.category)) categories.push({ name: titleCase(x.category), value: x.category })
+        if (!categories.find(c => c.value == x.category)) categories.push({ name: titleCase(x.category), value: x.category })
       })
       interaction.respond(categories)
     }
