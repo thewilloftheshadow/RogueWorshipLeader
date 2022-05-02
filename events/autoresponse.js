@@ -7,13 +7,13 @@ module.exports = (client) => {
     let check = message.content.toLowerCase()
 
     console.log(`[Autocomplete] Source phrase: ${check}`)
-    
-    let responses = await autoresponse.find({guild: message.guild.id, deleted: false})
-    responses.forEach(x => {
+
+    let responses = await autoresponse.find({ guild: message.guild.id, deleted: false })
+    responses.forEach((x) => {
       console.log(`[Autocomplete] Checking against: ${x.phrase}`)
-      if(check.includes(x.trigger)) {
+      if (check.includes(x.trigger)) {
         console.log(`[Autocomplete] Found match: ${x.trigger}`)
-        await channel.send({ content: `${response}` })
+        channel.send({ content: `${response}` })
       }
     })
 
