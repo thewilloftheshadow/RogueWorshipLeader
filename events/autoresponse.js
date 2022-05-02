@@ -1,7 +1,7 @@
 const { autoresponse } = require("../db")
 
 module.exports = (client) => {
-  client.on("messageCreate", (message) => {
+  client.on("messageCreate", async (message) => {
     if (message.author?.bot) return
     if (!message.guild?.id) return
     let check = message.content.toLowerCase()
