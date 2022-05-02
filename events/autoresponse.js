@@ -1,4 +1,5 @@
 const { autoresponse } = require("../db")
+const shuffle = require("shuffle-array")
 
 module.exports = (client) => {
   client.on("messageCreate", async (message) => {
@@ -13,7 +14,12 @@ module.exports = (client) => {
       console.log(`[Autocomplete] Checking against: ${x.trigger.toLowerCase()}`)
       if (check.includes(x.trigger.toLowerCase())) {
         console.log(`[Autocomplete] Found match: ${x.trigger.toLowerCase()}`)
-        message.channel.send({ content: `${x.response}` })
+        let res = x.response.split("|")
+        console.log(`[Autocomplete] Split into: ${res}`)
+        shuffle(res)
+        let send = res[0]
+        console.log(`[Autocomplete] Sending: ${send}`)
+        message.channel.send({ content: `${send}` })
       }
     })
   })
