@@ -13,7 +13,7 @@ module.exports = (client) => {
       console.log(`[Autocomplete] Checking against: ${x.trigger}`)
       if (check.includes(x.trigger)) {
         console.log(`[Autocomplete] Found match: ${x.trigger}`)
-        channel.send({ content: `${response}` })
+        message.channel.send({ content: `${response}` })
       }
     })
   })
