@@ -10,13 +10,11 @@ module.exports = (client) => {
 
     let responses = await autoresponse.find({ guild: message.guild.id, deleted: false })
     responses.forEach((x) => {
-      console.log(`[Autocomplete] Checking against: ${x.phrase}`)
+      console.log(`[Autocomplete] Checking against: ${x.trigger}`)
       if (check.includes(x.trigger)) {
         console.log(`[Autocomplete] Found match: ${x.trigger}`)
         channel.send({ content: `${response}` })
       }
     })
-
-    triggers.forEach((x) => respond(x, message.channel))
   })
 }
