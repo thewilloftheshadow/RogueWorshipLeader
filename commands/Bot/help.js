@@ -9,6 +9,6 @@ module.exports = {
   },
   permissions: [],
   run: async (interaction, client) => {
-    message.channel.send("The commands show up when you use `/`, just literally look at those :)")
+    interaction.reply("The commands show up when you use `/`, just literally look at those :)\nhttps://tenor.com/bymGR.gif")
   },
 }
