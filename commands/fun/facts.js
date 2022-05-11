@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js")
 const shuffle = require("shuffle-array")
 const { facts } = require("../../db")
-const {titleCase} = require("../../fn")
+const { titleCase } = require("../../fn")
 
 module.exports = {
   command: {
@@ -27,9 +27,15 @@ module.exports = {
     await shuffle(factList)
     let factData = factList[0]
 
-    if(!factData) return interaction.reply("Unable to find a fact in that category")
+    if (!factData) return interaction.reply("Unable to find a fact in that category")
 
-    let embed = new MessageEmbed({ title: "Did you know...", color: "RANDOM", footer: titleCase(category), thumbnail: interaction.guild.iconURL({ dynamic: true }) })
+    let embed = new MessageEmbed({
+      title: "Did you know...",
+      color: "RANDOM",
+      footer: titleCase(category),
+      thumbnail: interaction.guild.iconURL({ dynamic: true }),
+      footer: { text: titleCase(category) },
+    })
     embed.setDescription(factData.fact)
 
     let m = await interaction.editReply({ embeds: [embed], fetchReply: true })
