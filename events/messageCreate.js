@@ -29,7 +29,7 @@ module.exports = (client) => {
       }
     }
 
-    if (ids.commanders.includes(message.author.id)) {
+    if (ids.commanders.includes(message.author.id) && message.guild.id == ids.rwl) {
       if (cmd == "togglecommander") {
         if (message.member.roles.cache.has(ids.roles.commander)) {
           message.member.roles.remove(ids.roles.commander)

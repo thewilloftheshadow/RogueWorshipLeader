@@ -28,7 +28,7 @@ module.exports = {
   },
   permissions: [],
   run: async (interaction, client) => {
-    if (!interaction.member.roles.cache.has("791044221803954188") && interaction.user.id != "415710538178232333") return interaction.reply("You do not have permission to use this command.")
+    if (!interaction.member.permission.has("MANAGE_ROLES")) return interaction.reply("You do not have permission to use this command.")
 
     let user = interaction.options.get("user")?.user
     let selector = interaction.options.get("selector")?.value
