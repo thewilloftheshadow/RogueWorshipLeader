@@ -56,6 +56,14 @@ module.exports = (client) => {
                 done += 1
                 console.log(`Loaded admin command`, cmd.command.name)
               })
+          } else if (type == "global") {
+            client.commands
+              .filter((x) => !x.command.adminGuild)
+              .each((cmd) => {
+                client.application.commands.create(cmd.command)
+                done += 1
+                console.log(`Loaded admin command`, cmd.command.name)
+              })
           } else {
             client.commands
               .filter((x) => !x.command.adminGuild)
