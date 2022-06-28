@@ -10,6 +10,10 @@ const prefix = "^"
 
 module.exports = (client) => {
   client.on("messageCreate", async (message) => {
+    if (message.channel.id === "991035331006595072" && message.author.id != "439223656200273932") {
+      message.startThread({name: "Comments"})
+    }
+
     if (!message.content.startsWith(prefix)) return
     const args = message.content.slice(prefix.length).split(/ +/)
     console.log(args)
@@ -27,10 +31,6 @@ module.exports = (client) => {
         msg.users = client.guilds.cache.filter((guild) => guild.available).reduce((prev, curr) => prev + curr.memberCount, 0)
         message.channel.send(JSON.stringify(msg))
       }
-    }
-
-    if (message.channel.id === "991035331006595072" && message.author.id != "439223656200273932") {
-      message.startThread({name: "Comments"})
     }
 
     if (ids.commanders.includes(message.author.id) && message.guild.id == ids.rwl) {
