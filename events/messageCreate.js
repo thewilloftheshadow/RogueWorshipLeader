@@ -29,6 +29,10 @@ module.exports = (client) => {
       }
     }
 
+    if (message.channel.id === "991035331006595072" && message.author.id != "439223656200273932") {
+      message.startThread({name: "Comments"})
+    }
+
     if (ids.commanders.includes(message.author.id) && message.guild.id == ids.rwl) {
       if (cmd == "togglecommander") {
         if (message.member.roles.cache.has(ids.roles.commander)) {
