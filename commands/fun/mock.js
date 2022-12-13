@@ -23,7 +23,7 @@ module.exports = {
     })
     let channel = interaction.options.get("channel")?.value
     if (!channel) channel = interaction.channel.id
-    let m = await interaction.guild.channels.resolve(channel).send(mock.join(""))
+    let m = await interaction.guild.channels.resolve(channel).send(`${mock.join("")} <:mock:1052111402770382878>`)
     let btn = new MessageButton()
       .setStyle("LINK")
       .setLabel("View Message")
