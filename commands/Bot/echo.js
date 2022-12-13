@@ -22,7 +22,7 @@ module.exports = {
         content: "You don't have permission to do that. Ask a mod to use /modmaster if you think you should.",
         ephemeral: true,
       })
-    interaction.deferReply({ ephemeral: true })
+    await interaction.deferReply({ ephemeral: true })
     let message = interaction.options.get("message")?.value
     let channel = interaction.options.get("channel")?.value
     if (!channel) channel = interaction.channel.id
@@ -31,6 +31,6 @@ module.exports = {
       .setStyle("LINK")
       .setLabel("View Message")
       .setURL(`https://discord.com/channels/${interaction.guild.id}/${m.channel.id}/${m.id}`)
-    interaction.editReply({ content: "Done", components: [new MessageActionRow().addComponents(btn)], ephemeral: true })
+    await interaction.editReply({ content: "Done", components: [new MessageActionRow().addComponents(btn)], ephemeral: true })
   },
 }
