@@ -1,3 +1,4 @@
+const { MessageButton, MessageActionRow } = require("discord.js")
 module.exports = {
   command: {
     name: "mock",
