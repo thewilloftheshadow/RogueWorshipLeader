@@ -18,7 +18,7 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true })
     let message = interaction.options.get("message")?.value
     let mock = message.split("").map((char, i) => {
-      if (i % 2 == 0) return char.toUpperCase()
+      if (i % 2 == 1) return char.toUpperCase()
       else return char
     })
     let channel = interaction.options.get("channel")?.value
