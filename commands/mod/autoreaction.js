@@ -1,7 +1,4 @@
-const { MessageActionRow, Modal, TextInputComponent, MessageEmbed } = require("discord.js")
-const { autoreaction } = require("../../db	")
-const { modmaster } = require("../../config")
-const ms = require("ms")
+const { autoreaction } = require("../../db")
 
 module.exports = {
   command: {
