@@ -98,6 +98,7 @@ module.exports = {
         responseDb.response = response
         responseDb.editedBy = interaction.user.id
         responseDb.editedAt = Date.now()
+        responseDb.deleted = false
       }
 
       responseDb.save()
