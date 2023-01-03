@@ -70,7 +70,7 @@ module.exports = (client) => {
     if (message.channel.type === "DM") return
     if (message.guild.id !== ids.rwl) return
 
-    switch (message.content) {
+    switch (message.content.toLowerCase()) {
       case "!run":
         if (message.channel.id !== "1055924501407342613") return
         await message.delete()
