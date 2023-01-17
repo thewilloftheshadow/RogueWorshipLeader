@@ -11,7 +11,7 @@ module.exports = [
     "Which day of the week is superior to all others?",
     "If you were an element, which one would you be? Why?",
     "What is the best way to start a day?",
-    "Why is the rum gone?"
+    "Why is the rum gone?",
     "C-3PO and I recently bought a pet Loth Cat. What should we name it?",
     "Which spaceship has the coolest design?",
     "What musical instrument is rarely played but is actually awesome?",
@@ -22,7 +22,7 @@ module.exports = [
     "I'm building an ark, but it can only fit 10 different animals. Which ones get to come aboard?",
     "What is the best species in Star Wars and why?",
     "Someone pick a movie, then everyone help recast the characters using muppets.",
-    "Who's your favorite superhero?"
+    "Who's your favorite superhero?",
     "If your personality was a food, what food would you be? Why?",
     "It you were a plant, what plant would you be? Why?",
     "What's one fun animal fact that you know?",
